@@ -1,4 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+
+import { connect } from 'react-redux'
+import { initPosts, initComments } from '../actions'
+import { timestampToTime } from '../utils/helper'
 import * as API from '../utils/api';
 
 class App extends Component {
@@ -6,7 +10,7 @@ class App extends Component {
 		// test API
 
 		/**
-		 * API - 分类
+		 * API - category
 		 */
 		/*API.getCategories().then(categories=>{
 			console.log(categories);
@@ -14,11 +18,11 @@ class App extends Component {
 
 
 		/**
-		 * API - 帖子
+		 * API - post
 		 */
-		/*API.getPosts().then(posts=>{
-			console.log(posts);
-		});*/
+		API.getPosts().then(posts=>{
+			this.props.initP(posts);
+		});
 
 		/*API.getCatPosts('react').then(posts=>{
 			console.log(posts);
@@ -61,7 +65,7 @@ class App extends Component {
 		});*/
 
 		/**
-		 * API - 评论
+		 * API - comment
 		 */
 		// 获取对应帖子的评论
 		/*API.getComments('test_123456').then(comments=>{
@@ -109,9 +113,38 @@ class App extends Component {
 	}
   render() {
     return (
+    	<div>
       <h1 style={{textAlign:"center",color:'#aaa'}}>Welcome to Readable</h1>
+      <ul>
+
+      </ul>
+      </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps ({ posts, comments }) {
+	return{
+		posts: posts.map(post =>({
+			id: post.id,
+			title: post.title,
+			author: post.author,
+			category: post.category,
+			voteScore: post.voteScore,
+			commentCount: post.commentCount,
+			time: timestampToTime(post.timestamp)
+		}))
+	}
+}
+
+function mapDispatchToProps (dispatch) {
+	return {
+		initP: (data) => dispatch(initPosts(data)),
+		initC: (data) => dispatch(initComments(data))
+	}
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(App)

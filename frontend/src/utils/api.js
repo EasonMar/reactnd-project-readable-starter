@@ -124,8 +124,8 @@ export const editComment = (commentId,data)=>
 		body: JSON.stringify(data)
 	}).then(res => res.json())
 
-	// Sets a comment's deleted flag to 'true'
-	export const deleteComment = (commentId)=>
+// Sets a comment's deleted flag to 'true'
+export const deleteComment = (commentId)=>
 	fetch(`${api}/comments/${commentId}`,{
 		method: 'DELETE',
 		headers
