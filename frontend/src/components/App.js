@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import { connect } from 'react-redux'
-import { initPosts, initComments } from '../actions'
-import { timestampToTime } from '../utils/helper'
-import * as API from '../utils/api';
+import { connect } from 'react-redux';
+import { fetchPosts, getComments, getPosts } from '../actions';
+import { timestampToTime } from '../utils/helper';
+// import * as API from '../utils/api';
 
 class App extends Component {
 	componentWillMount(){
@@ -20,12 +20,12 @@ class App extends Component {
 		/**
 		 * API - post
 		 */
-		API.getPosts().then(posts=>{
-			this.props.initP(posts);
-		});
+		/*API.getPosts().then(posts=>{
+			console.log(posts); // [{post},{post}]
+		});*/
 
 		/*API.getCatPosts('react').then(posts=>{
-			console.log(posts);
+			console.log(posts); // [{post},{post}]
 		});*/
 
 		// 新增帖子 - 返回对应帖子的内容
@@ -38,16 +38,16 @@ class App extends Component {
 			category: "test"
 		}
 		API.addPost(post_param).then(data=>{
-			console.log(data);  // 返回的帖子多了voteScore、commentCount、deleted三个字段.
+			console.log(data);  // 返回{post}, 并新增voteScore、commentCount、deleted三个字段.
 		})*/
 
 		/*API.getPostDetail('test_123456').then(detail=>{
-			console.log(detail);
+			console.log(detail); // 返回{post}
 		});*/
 
 		// 给帖子投票 - 返回对应帖子的内容
 		/*API.voteForPost('test_123456','upVote').then(post=>{
-			console.log(post);
+			console.log(post);  // 返回{post}
 		});*/
 
 		// 编辑帖子 - 返回对应帖子的内容
@@ -56,12 +56,12 @@ class App extends Component {
 			body: 'test_update_body'
 		}
 		API.editPost('test_123456', edit_post).then(detail=>{
-			console.log(detail);
+			console.log(detail);  // 返回{post}
 		});*/
 
 		// 删除帖子
 		/*API.deletePost('test_123456').then(res=>{
-			console.log(res) // 返回对应帖子的信息,且delete字段变为true
+			console.log(res) // 返回{post},且delete字段变为true
 		});*/
 
 		/**
@@ -110,6 +110,8 @@ class App extends Component {
 		/*API.deleteComment('test_comment_123').then(res=>{
 			console.log(res); // 返回对应评论的信息,且delete字段变为true
 		})*/
+
+		this.props.fetchP();
 	}
   render() {
     return (
@@ -139,8 +141,9 @@ function mapStateToProps ({ posts, comments }) {
 
 function mapDispatchToProps (dispatch) {
 	return {
-		initP: (data) => dispatch(initPosts(data)),
-		initC: (data) => dispatch(initComments(data))
+		getP: (data) => dispatch(getPosts(data)),
+		getC: (data) => dispatch(getComments(data)),
+		fetchP: () => dispatch(fetchPosts())
 	}
 }
 

@@ -1,17 +1,21 @@
-export const INIT_POSTS = 'INIT_POSTS'
-export const INIT_COMMENTS = 'INIT_COMMENTS'
+import * as API from '../utils/api';
 
-export function initPosts (posts) {
-	return{
-		type: INIT_POSTS,
-		posts
-	}
-}
+export const GET_POSTS = 'GET_POSTS';
+export const GET_COMMENTS = 'GET_COMMENTS';
 
 
-export function initComments (comments) {
-	return {
-		type: INIT_COMMENTS,
-		comments
-	}
-}
+export const getPosts = posts => ({
+	type: GET_POSTS,
+	posts
+})
+
+
+export const getComments = comments => ({
+	type: GET_COMMENTS,
+	comments
+})
+
+// thunk action - 还不知道用它来干啥.
+export const fetchPosts = () => dispatch => (
+	API.getPosts().then(posts => dispatch(getPosts(posts)))
+)
