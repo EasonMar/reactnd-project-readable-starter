@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
+import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -19,7 +20,7 @@ const store = createStore(
 
 ReactDOM.render(
 	<Provider store={store}>
-    <App />
+    <BrowserRouter><App /></BrowserRouter>
   </Provider>,
 	document.getElementById('root')
 )

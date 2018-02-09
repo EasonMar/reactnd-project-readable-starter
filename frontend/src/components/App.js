@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+import PostList from './PostList.js';
+import PostDetail from './PostDetail.js';
 
-import { connect } from 'react-redux';
-import { fetchPosts, getComments, getPosts } from '../actions';
-import { timestampToTime } from '../utils/helper';
+// import { connect } from 'react-redux';
 // import * as API from '../utils/api';
 
 class App extends Component {
@@ -110,44 +111,15 @@ class App extends Component {
 		/*API.deleteComment('test_comment_123').then(res=>{
 			console.log(res); // 返回对应评论的信息,且delete字段变为true
 		})*/
-
-		this.props.fetchP();
 	}
   render() {
     return (
-    	<div>
-      <h1 style={{textAlign:"center",color:'#aaa'}}>Welcome to Readable</h1>
-      <ul>
-
-      </ul>
+    	<div className="app">
+        <Route path="/" exact render={() => <PostList />} />
+        <Route path="/detail" render={() => <PostDetail />} />
       </div>
     );
   }
 }
 
-function mapStateToProps ({ posts, comments }) {
-	return{
-		posts: posts.map(post =>({
-			id: post.id,
-			title: post.title,
-			author: post.author,
-			category: post.category,
-			voteScore: post.voteScore,
-			commentCount: post.commentCount,
-			time: timestampToTime(post.timestamp)
-		}))
-	}
-}
-
-function mapDispatchToProps (dispatch) {
-	return {
-		getP: (data) => dispatch(getPosts(data)),
-		getC: (data) => dispatch(getComments(data)),
-		fetchP: () => dispatch(fetchPosts())
-	}
-}
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(App)
+export default App
