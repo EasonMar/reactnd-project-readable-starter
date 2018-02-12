@@ -1,25 +1,11 @@
 import { combineReducers } from 'redux';
-import { INIT_POSTS, GET_POSTS, GET_POST_DETAIL, INIT_COMMENTS, GET_COMMENTS } from '../actions';
+import { GET_POSTS, GET_COMMENTS } from '../actions';
 
-const initState = [
-	{
-		id:null,
-		title:null,
-		body:null,
-		author:null,
-		voteScore:null,
-		commentCount:null,
-		timestamp:null
-	}
-]
-function posts (state = initState, action){
+
+function posts (state = [], action){
 	switch (action.type){
-		case INIT_POSTS :
-			return action.posts;
 		case GET_POSTS :
-			return [...state, ...action.posts];
-		case GET_POST_DETAIL :
-			return [action.post];
+			return action.posts;
 		default :
 			return state;
 	}
@@ -27,10 +13,8 @@ function posts (state = initState, action){
 
 function comments (state = [], action){
 	switch (action.type){
-		case INIT_COMMENTS :
-			return action.comments;
 		case GET_COMMENTS :
-			return [...state, ...action.comments];
+			return action.comments;
 		default :
 			return state;
 	}

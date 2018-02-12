@@ -7,7 +7,6 @@ import { timestampToTime } from '../utils/helper';
 class PostDetail extends Component {
 	componentWillMount(){
 		const queryId = window.location.search.split('=')[1];
-		this.props.getPostDetail(queryId); // 因为这两货是异步的...有可能执行完render,他们的action还没派发出去,导致状态还是旧的...
 		this.props.initComments(queryId); // 因为这两货是异步的...有可能执行完render,他们的action还没派发出去,导致状态还是旧的...
 	}
 	render() {
@@ -66,8 +65,7 @@ function mapStateToProps ({ posts,comments }) {
 
 function mapDispatchToProps (dispatch) {
 	return {
-		initComments: (postId) => dispatch(fetchInitComments(postId)),
-		getPostDetail: (postId) => dispatch(fetchPostDetail(postId))
+		initComments: (postId) => dispatch(fetchInitComments(postId))
 	}
 }
 
