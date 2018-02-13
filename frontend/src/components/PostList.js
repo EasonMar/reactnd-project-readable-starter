@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchInitPosts } from '../actions';
+import { fetchComments } from '../actions';
 import { timestampToTime } from '../utils/helper';
 
 
 class PostList extends Component {
-	componentWillMount(){
-		this.props.initPosts()
-	}
   	render() {
 		return (
 			<ul className="post_list">
 				{
+					// 久不写,连onClick怎么传参都忘记了
 					this.props.posts.map(post=>(
-						<li key={post.id}>
+						<li key={post.id} style={{padding:'20px'}}>
 							<Link to={`/detail?postId=${post.id}`} >
 								<span className="post_title">{post.title}...</span>
 							</Link>
 							<span className="post_author">written-by {post.author}...</span>
 							<span className="post_voteScore">voteScore {post.voteScore}...</span>
 							<span className="post_commentCount">commentCount {post.commentCount}...</span>
-							<span className="post_create_at">create-at {post.time}</span>
+							<span className="post_create_at">create-at {timestampToTime(post.timestamp)}</span>
 						</li>
 					))
 				}
@@ -35,20 +33,21 @@ function mapStateToProps ({ posts }) {
 		posts: posts.map(post =>({
 			id: post.id,
 			title: post.title,
+			body: post.body,
 			author: post.author,
+			category: post.category,
 			voteScore: post.voteScore,
 			commentCount: post.commentCount,
-			time: timestampToTime(post.timestamp)
+			timestamp: post.timestamp
 		}))
 	}
 }
 
 function mapDispatchToProps (dispatch) {
 	return {
-		initPosts: () => dispatch(fetchInitPosts())
+		getComments: (postId) => dispatch(fetchComments(postId))
 	}
 }
-
 
 
 export default connect(mapStateToProps,mapDispatchToProps)(PostList)
