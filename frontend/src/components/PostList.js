@@ -14,20 +14,15 @@ class PostList extends Component {
     	<ul className="post_list">
     		{
     			this.props.posts.map(post=>(
-    				<Link  key={post.id} to={
-    					{
-    						pathname:'/detail',
-    						query: {postId: post.id}
-    					}
-    				}>
-	    				<li>
-	    					<span className="post_title">{post.title}...</span>
+	    				<li key={post.id}>
+    						<Link   to={'/detail'}>
+	    						<span className="post_title">{post.title}...</span>
+    						</Link>
 	    					<span className="post_author">written-by {post.author}...</span>
 	    					<span className="post_voteScore">voteScore {post.voteScore}...</span>
 	    					<span className="post_commentCount">commentCount {post.commentCount}...</span>
 	    					<span className="post_create_at">create-at {post.time}</span>
 	    				</li>
-    				</Link>
     			))
     		}
     	</ul>

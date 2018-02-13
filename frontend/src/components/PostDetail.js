@@ -12,7 +12,13 @@ class PostDetail extends Component {
   	console.log(this.props);
     return (
     	<ul className="post_detail">
-
+    		<li>{this.props.id}</li>
+    		<li>{this.props.title}</li>
+    		<li>{this.props.body}</li>
+    		<li>{this.props.author}</li>
+    		<li>{this.props.category}</li>
+    		<li>{this.props.voteScore}</li>
+    		<li>{this.props.time}</li>
     	</ul>
     )
   }
