@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchComments } from '../actions';
+import { fetchPosts, clearPostDetail, clearCommentsState } from '../actions';
 import { timestampToTime } from '../utils/helper';
+
+import Loading from 'react-loading';
 
 
 class PostList extends Component {
+	componentWillMount(){
+		// 获取所有post
+		this.props.getPosts();
+		// 要不要清空comments\PostDetail的状态...感觉很不和谐！
+		this.props.clearCommentsState();
+		this.props.clearPostDetail();
+	}
   	render() {
 		return (
 			<ul className="post_list">
-				{
-					// 久不写,连onClick怎么传参都忘记了
-					this.props.posts.map(post=>(
+				{	this.props.posts.length === 0
+					? <Loading delay={50} type='spokes' color='#222' className='loading' />
+					: this.props.posts.map(post=>(
 						<li key={post.id} style={{padding:'20px'}}>
 							<Link to={`/detail?postId=${post.id}`} >
 								<span className="post_title">{post.title}...</span>
@@ -30,22 +39,17 @@ class PostList extends Component {
 
 function mapStateToProps ({ posts }) {
 	return{
-		posts: posts.map(post =>({
-			id: post.id,
-			title: post.title,
-			body: post.body,
-			author: post.author,
-			category: post.category,
-			voteScore: post.voteScore,
-			commentCount: post.commentCount,
-			timestamp: post.timestamp
-		}))
+		// posts: [...posts]
+		// 直接引用会有什么问题？
+		posts
 	}
 }
 
 function mapDispatchToProps (dispatch) {
 	return {
-		getComments: (postId) => dispatch(fetchComments(postId))
+		getPosts: () => dispatch(fetchPosts()),
+	    clearCommentsState: () => dispatch(clearCommentsState()),
+	    clearPostDetail: () => dispatch(clearPostDetail())
 	}
 }
 
