@@ -7,7 +7,8 @@ export const POST_DETAIL = 'POST_DETAIL';
 export const CLEAR_POST_DETAIL = 'CLEAR_POST_DETAIL';
 
 export const INIT_CATEGORY = 'INIT_CATEGORY';
-export const CATEGORIZE = 'CATEGORIZE';
+export const CATEGORYSELECT = 'CATEGORYSELECT';
+export const CATEGORIZEPOST = 'CATEGORIZEPOST';
 
 export const ADD_POST = 'ADD_POST';
 export const ADD_COMMENT = 'ADD_COMMENT';
@@ -43,26 +44,37 @@ export const initCategory = categoryArr => ({
 	categoryArr
 })
 
-export const categorize = (postsArr,category) => ({
-	type: CATEGORIZE,
-	postsArr,
-	category
+// 分类
+export const categorizePost = (postsArr) => ({
+	type: CATEGORIZEPOST,
+	postsArr  // 分类后的posts
 })
 
+export const categorySelect = (category) => ({
+	type: CATEGORYSELECT,
+	category  // 分类后的posts
+})
 
 // thunk
 export const fetchPosts = () => dispatch => (
-	API.getPosts().then(posts => dispatch(getPosts(posts)))
+	API.getPosts().then(postsArr => dispatch(getPosts(postsArr)))
 )
 
-export const fetchComments = (postId) => dispatch => (
+export const fetchComments = postId => dispatch => (
 	API.getComments(postId).then(comments => dispatch(getComments(comments)))
 )
 
-export const fetchPostDetail = (postId) => dispatch => (
-	API.getPostDetail(postId).then(posts => dispatch(postDetail(posts)))
+export const fetchPostDetail = postId => dispatch => (
+	API.getPostDetail(postId).then(postsArr => dispatch(postDetail(postsArr)))
 )
 
 export const fetchCategories = () => dispatch => (
 	API.getCategories().then(categories => dispatch(initCategory(categories)))
 )
+
+export const fetchCategorizedPosts = (category) => dispatch => {
+	dispatch(categorySelect(category)); // 先改变categorySelect
+	category === 'default'
+	? API.getPosts().then(postsArr => dispatch(getPosts(postsArr)))
+	: API.getCatPosts(category).then(postsArr => dispatch(categorizePost(postsArr, category)))
+}

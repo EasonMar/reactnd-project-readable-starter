@@ -5,13 +5,17 @@ import {
 	POST_DETAIL,
 	CLEAR_POST_DETAIL,
 	CLEAR_COMMENTS_STATE,
-	INIT_CATEGORY
+	INIT_CATEGORY,
+	CATEGORIZEPOST,
+	CATEGORYSELECT
 } from '../actions';
 
 
 function posts (state = [], action){
 	switch (action.type){
 		case GET_POSTS :
+			return action.postsArr;
+		case CATEGORIZEPOST :
 			return action.postsArr;
 		default :
 			return state;
@@ -60,9 +64,19 @@ function categories (state = [], action){
 	}
 }
 
+function cateSelect (state = 'default', action){
+	switch (action.type){
+		case CATEGORYSELECT :
+			return action.category
+		default :
+			return state;
+	}
+}
+
 export default combineReducers({
 	posts,
 	postDetail,
 	comments,
-	categories
+	categories,
+	cateSelect
 })

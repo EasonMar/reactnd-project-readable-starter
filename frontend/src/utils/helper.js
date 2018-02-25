@@ -1,4 +1,6 @@
 export function timestampToTime(timestamp) {
+	if(!timestamp) return '';
+
     let date = new Date(timestamp), //时间戳为10位需*1000，时间戳为13位的话不需乘1000
         Y = date.getFullYear() + '-',
         M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-',
