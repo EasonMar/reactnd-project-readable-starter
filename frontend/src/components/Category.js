@@ -25,7 +25,12 @@ class Category extends Component {
 								listStyle: 'none'
 							}}
 							onClick={() => this.props.categorizedPosts(cate.path)}
-						>{cate.name}</li>
+						>
+							{cate.name === this.props.cateSelect
+								? <span style={{color: 'red'}}>{cate.name}</span>
+								: <span>{cate.name}</span>
+							}
+						</li>
 					))
 				}
 			</ul>
