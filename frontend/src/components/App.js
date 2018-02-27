@@ -7,7 +7,10 @@ class App extends Component {
   	render() {
 		return (
 			<div className="app">
-				<Route path="/" exact render={() => <PostList/>} />
+				<Route path="/" exact render={() => <PostList path="default" />} />
+				<Route path="/react" render={() => <PostList path="react" />} />
+				<Route path="/redux" render={() => <PostList path="redux" />} />
+				<Route path="/udacity" render={() => <PostList path="udacity" />} />
 				<Route path="/detail" render={() => <PostDetail/>} />
 			</div>
 		);

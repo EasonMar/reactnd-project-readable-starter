@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, fetchCategorizedPosts } from '../actions';
+import { Link } from 'react-router-dom';
+import { fetchCategories } from '../actions';
 
 class Category extends Component {
 	componentWillMount(){
@@ -17,19 +18,20 @@ class Category extends Component {
 			>
 				{
 					this.props.categories.map(cate=>(
-						<li key={cate.path}
+						<li key={cate.name}
 							style={{
 								cursor: 'pointer',
 								float: 'left',
 								marginLeft: '10px',
 								listStyle: 'none'
 							}}
-							onClick={() => this.props.categorizedPosts(cate.path)}
 						>
-							{cate.name === this.props.cateSelect
-								? <span style={{color: 'red'}}>{cate.name}</span>
-								: <span>{cate.name}</span>
-							}
+							<Link to={`/${cate.path === 'default' ? '' : cate.path}`}>
+								{cate.name === this.props.cateSelect
+									? <span style={{color: 'red'}}>{cate.name}</span>
+									: <span>{cate.name}</span>
+								}
+							</Link>
 						</li>
 					))
 				}
@@ -47,8 +49,7 @@ function mapStateToProps ({ categories, cateSelect }) {
 
 function mapDispatchToProps (dispatch) {
 	return {
-		initCategory: () => dispatch(fetchCategories()),
-		categorizedPosts: category => dispatch(fetchCategorizedPosts(category))
+		initCategory: () => dispatch(fetchCategories())
 	}
 }
 

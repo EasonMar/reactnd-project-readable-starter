@@ -7,7 +7,8 @@ import {
 	CLEAR_COMMENTS_STATE,
 	INIT_CATEGORY,
 	CATEGORIZEPOST,
-	CATEGORYSELECT
+	CATEGORYSELECT,
+	REQSTATE
 } from '../actions';
 
 
@@ -73,10 +74,20 @@ function cateSelect (state = 'default', action){
 	}
 }
 
+function reqState (state = 'done', action){
+	switch (action.type){
+		case REQSTATE :
+			return action.state
+		default :
+			return state;
+	}
+}
+
 export default combineReducers({
 	posts,
 	postDetail,
 	comments,
 	categories,
-	cateSelect
+	cateSelect,
+	reqState
 })
