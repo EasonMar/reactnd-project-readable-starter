@@ -1,57 +1,70 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPostDetail, fetchComments, clearPostDetail, clearCommentsState } from '../actions';
-import { timestampToTime } from '../utils/helper';
+import { fetchPostDetail, fetchComments, clearPostDetail, clearCommentsState, fetchDelPost } from '../actions';
+import { timestampToTime, getQueryString } from '../utils/helper';
 
 import Loading from 'react-loading';
 
 class PostDetail extends Component {
 	componentWillMount(){
-		// 先清空comments\PostDetail的旧状态...
-		this.props.clearCommentsState();
+		const post_id = getQueryString('postId');
+		// 先清空comments的旧状态
 		this.props.clearPostDetail();
-
-		// 获取comments\PostDetail的新状态...
-		const post_id = window.location.search.split('=')[1];
-		this.props.postDetail(post_id);
+		// 获取comments的新状态
 		this.props.fetchComments(post_id);
+		// 如果当前没有最新的post_detail,则需要请求
+		if(!this.props.hasPostDetail){
+			// 先清空comments的旧状态
+			this.props.clearCommentsState();
+			// 获取comments的新状态
+ 			this.props.postDetail(post_id);
+		}
 	}
 	render() {
-		const { post, comments } = this.props;
+		const { post, comments, reqState } = this.props;
 		return (
-			<div className="post_detail" style={{marginLeft:"50px"}}>
-				{Object.keys(post).length === 0
+			<div className="post_detail">
+				{reqState === 'begin'
 					? <Loading delay={50} type='spokes' color='#222' className='loading' />
 					: <div className="content">
-						<h2>{post.title}</h2>
-						<div className="create">
-							<span style={{paddingRight: "5px",fontSize:"10px"}}>{post.author}</span>
-							<span style={{paddingRight: "5px",fontSize:"10px"}}>{post.voteScore}</span>
-							<span style={{paddingRight: "5px",fontSize:"10px"}}>{post.commentCount}</span>
-							<span style={{paddingRight: "5px",fontSize:"10px"}}>{timestampToTime(post.timestamp)}</span>
+						<h3>
+							{post.voteScore > 0
+								? <span className="vote posi">+{post.voteScore}</span>
+								: <span className="vote nega">{post.voteScore}</span>
+							}
+							<span className="title">{post.title}</span>
+						</h3>
+						<div className="post_info">
+							<span className="author">{post.author}</span>
+							<span className="time">{timestampToTime(post.timestamp)}</span>
 						</div>
-						<p>{post.body}</p>
+						<p className="content">{post.body}</p>
 						<ul className="commentArea">
 							{comments.map(com => (
 								<li key={com.id}>
-									<span style={{paddingRight: "5px",fontSize:"10px"}}>{com.body}</span>
-									<span style={{paddingRight: "5px",fontSize:"10px"}}>{com.author}</span>
-									<span style={{paddingRight: "5px",fontSize:"10px"}}>{com.voteScore}</span>
-									<span style={{paddingRight: "5px",fontSize:"10px"}}>{timestampToTime(com.timestamp)}</span>
+									<span>{com.body}</span>
+									<span>{com.author}</span>
+									<span>{com.voteScore}</span>
+									<span>{timestampToTime(com.timestamp)}</span>
 								</li>
 							))}
 						</ul>
+						<button className="delete_post"
+							onClick={()=>this.props.delPost(post.id)}
+						>Delete the Post</button>
 					</div>}
 			</div>
 		)
 	}
 }
 
-function mapStateToProps ({ postDetail,comments }) {
+function mapStateToProps ({ postDetail,comments,hasPostDetail,reqState }) {
 	return{
 		post: postDetail,
 		// comments: [...comments]
-		comments // 直接引用会有什么问题？
+		comments, // 直接引用会有什么问题？
+		hasPostDetail,
+		reqState
 	}
 }
 
@@ -60,7 +73,8 @@ function mapDispatchToProps (dispatch) {
 		postDetail: postId => dispatch(fetchPostDetail(postId)),
 		fetchComments: postId =>dispatch(fetchComments(postId)),
 		clearCommentsState: () => dispatch(clearCommentsState()),
-	    clearPostDetail: () => dispatch(clearPostDetail())
+	    clearPostDetail: () => dispatch(clearPostDetail()),
+	    delPost: postId => dispatch(fetchDelPost(postId))
 	}
 }
 

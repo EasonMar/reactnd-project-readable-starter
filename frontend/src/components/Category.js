@@ -9,25 +9,14 @@ class Category extends Component {
 	}
 
 	render() {
+		const { categories, cateSelect } = this.props;
 		return(
-			<ul className="Category"
-				style={{
-					overflow: 'hidden',
-					margin: '10px'
-				}}
-			>
+			<ul className="Category">
 				{
-					this.props.categories.map(cate=>(
-						<li key={cate.name}
-							style={{
-								cursor: 'pointer',
-								float: 'left',
-								marginLeft: '10px',
-								listStyle: 'none'
-							}}
-						>
+					categories.map(cate=>(
+						<li key={cate.name}>
 							<Link to={`/${cate.path === 'default' ? '' : cate.path}`}>
-								{cate.name === this.props.cateSelect
+								{cate.name === cateSelect
 									? <span style={{color: 'red'}}>{cate.name}</span>
 									: <span>{cate.name}</span>
 								}

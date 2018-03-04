@@ -1,14 +1,17 @@
 import { combineReducers } from 'redux';
 import {
 	GET_POSTS,
-	GET_COMMENTS,
 	POST_DETAIL,
 	CLEAR_POST_DETAIL,
+	ADD_POST,
+	EDIT_POST,
+	HAS_POST_DETAIL,
+	GET_COMMENTS,
 	CLEAR_COMMENTS_STATE,
 	INIT_CATEGORY,
-	CATEGORIZEPOST,
-	CATEGORYSELECT,
-	REQSTATE
+	CATEGORIZE_POST,
+	CATEGORY_SELECT,
+	REQ_STATE
 } from '../actions';
 
 
@@ -16,7 +19,7 @@ function posts (state = [], action){
 	switch (action.type){
 		case GET_POSTS :
 			return action.postsArr;
-		case CATEGORIZEPOST :
+		case CATEGORIZE_POST :
 			return action.postsArr;
 		default :
 			return state;
@@ -40,6 +43,19 @@ function postDetail (state = init_detail, action){
 			return action.postObj;
 		case CLEAR_POST_DETAIL :
 			return {};
+		case ADD_POST :
+			return action.postObj;
+		case EDIT_POST :
+			return action.postObj;
+		default :
+			return state;
+	}
+}
+
+function hasPostDetail (state = false, action){
+	switch (action.type){
+		case HAS_POST_DETAIL :
+			return action.hasDetail
 		default :
 			return state;
 	}
@@ -67,7 +83,7 @@ function categories (state = [], action){
 
 function cateSelect (state = 'default', action){
 	switch (action.type){
-		case CATEGORYSELECT :
+		case CATEGORY_SELECT :
 			return action.category
 		default :
 			return state;
@@ -76,7 +92,7 @@ function cateSelect (state = 'default', action){
 
 function reqState (state = 'done', action){
 	switch (action.type){
-		case REQSTATE :
+		case REQ_STATE :
 			return action.state
 		default :
 			return state;
@@ -86,6 +102,7 @@ function reqState (state = 'done', action){
 export default combineReducers({
 	posts,
 	postDetail,
+	hasPostDetail,
 	comments,
 	categories,
 	cateSelect,

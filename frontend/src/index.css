@@ -3,3 +3,111 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+/* 目录 */
+.Category{
+	overflow: hidden;
+	margin: 20px 10px 0;
+}
+
+.Category li{
+	cursor: pointer;
+	float: left;
+	margin-right: 30px;
+	list-style: none;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+
+/* 列表页 */
+.post_list li{
+	padding: 10px;
+}
+
+.post_list li span{
+	margin-right: 15px;
+}
+
+.post_list li a{
+	text-decoration: none;
+}
+
+.post_list li .post_title{
+	color: black;
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.post_list li .post_author{
+	color: #4f62ce;
+}
+.post_list li .post_voteScore{
+	color: red;
+	font-weight: bold;
+}
+
+.post_list li .post_commentCount{
+	color: green;
+	font-weight: bold;
+}
+
+.post_list li .post_time{
+	color: #999;
+}
+
+.add_post{
+	margin-left: 50px;
+	text-decoration: none;
+	color: #fff;
+	font-weight: bold;
+	display: block;
+	width: 100px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	background: red;
+	border-radius: 10px;
+}
+
+/* 详情页 */
+
+.post_detail{
+	padding: 30px;
+}
+
+.post_detail span{
+	margin-right: 10px;
+	font-size: 10px;
+}
+.post_detail .vote{
+	font-size: 18px;
+	font-weight: bold;
+	margin-right: 5px;
+	border: 2px solid black;
+	border-radius: 50%;
+}
+
+.post_detail .vote.posi{
+	color: red;
+	border-color: red;
+}
+
+.post_detail .vote.nega{
+	color: green;
+	border-color: green;
+}
+
+.post_detail .title{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.post_detail .author{
+	color: #4f62ce;
+	font-weight: bold;
+}
+
+.post_detail .time{
+	color: #999;
+}

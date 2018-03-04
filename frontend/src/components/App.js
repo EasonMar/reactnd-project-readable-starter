@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import PostList from './PostList.js';
 import PostDetail from './PostDetail.js';
+import CreatePost from './CreatePost.js';
 
 class App extends Component {
   	render() {
@@ -12,6 +13,7 @@ class App extends Component {
 				<Route path="/redux" render={() => <PostList path="redux" />} />
 				<Route path="/udacity" render={() => <PostList path="udacity" />} />
 				<Route path="/detail" render={() => <PostDetail/>} />
+				<Route path="/create" render={() => <CreatePost/>} />
 			</div>
 		);
   	}
