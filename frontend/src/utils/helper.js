@@ -12,12 +12,12 @@ export function timestampToTime(timestamp) {
 }
 
 
-export function getQueryString(name) {
-    const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    const r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]);
-    return null;
-}
+// export function getQueryString(name) {
+//     const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+//     const r = window.location.search.substr(1).match(reg);
+//     if (r != null) return unescape(r[2]);
+//     return null;
+// }
 
 export function getUuid() {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');

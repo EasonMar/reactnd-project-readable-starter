@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCategories,fetchAddPost } from '../actions';
-import { getQueryString } from '../utils/helper';
 
 import Loading from 'react-loading';
 
@@ -12,7 +11,7 @@ class CreatePost extends Component {
 
 	submit(){
 		const post_param = {
-			id: getQueryString('postId'),
+			id: this.props.match.params.pid,
 			timestamp: Date.now(),
 			title: this.title.value || 'no_title',
 			body: this.content.value || 'no_cotent',

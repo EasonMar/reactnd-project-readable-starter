@@ -10,19 +10,9 @@ import Category from './Category.js';
 
 class PostList extends Component {
 	componentWillMount(){
-		switch (this.props.path){
-			case 'react':
-				this.props.categorizedPosts('react');
-				break;
-			case 'redux':
-				this.props.categorizedPosts('redux');
-				break;
-			case 'udacity':
-				this.props.categorizedPosts('udacity');
-				break;
-			default:
-				this.props.categorizedPosts('default');
-		}
+		const category = this.props.path || 'default';
+		this.props.categorizedPosts(category);
+
 		// 重设hasPostDetail为False - 进入postDetail页需要请求
 		this.props.resetHasPostDetail();
 	}
@@ -39,7 +29,7 @@ class PostList extends Component {
 							? <li className="no_post">尚无帖子……</li>
 							: posts.map(post=>(
 								<li key={post.id}>
-									<Link to={`/detail?postId=${post.id}`} >
+									<Link to={`/detail/${post.id}`} >
 										<span className="post_title">{post.title}</span>
 									</Link>
 									<br />
@@ -51,7 +41,7 @@ class PostList extends Component {
 							))
 						}
 					</ul>
-					<Link to={`/create?postId=${getUuid()}`} className="add_post">Add Post</Link>
+					<Link to={`/create/${getUuid()}`} className="add_post">Add Post</Link>
 				  </div>
 				}
 			</div>

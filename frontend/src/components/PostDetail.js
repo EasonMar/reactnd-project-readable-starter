@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { fetchPostDetail, fetchComments, clearPostDetail, clearCommentsState, fetchDelPost } from '../actions';
-import { timestampToTime, getQueryString } from '../utils/helper';
+import { timestampToTime } from '../utils/helper';
 
 import Loading from 'react-loading';
 
 class PostDetail extends Component {
 	componentWillMount(){
-		const post_id = getQueryString('postId');
+		const post_id = this.props.match.params.pid;
 		// 先清空comments的旧状态
 		this.props.clearPostDetail();
 		// 获取comments的新状态
@@ -79,4 +80,4 @@ function mapDispatchToProps (dispatch) {
 }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(PostDetail)
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(PostDetail))

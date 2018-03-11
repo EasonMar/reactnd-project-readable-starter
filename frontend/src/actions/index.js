@@ -109,16 +109,14 @@ export const fetchAddPost = postParam => dispatch => {
 	    dispatch(addPost(postObj)) // 请求结果
 	    // 设定详情页是否需要请求的状态
 	    dispatch(hasPostDetail(true));
-	    // 跳转到详情页 ---- 这样跳转会导致页面重载...
-	    window.location.replace(`/detail?postId=${postParam.id}`)
+	    // 跳转到详情页
 	})
 }
 
 export const fetchDelPost = postId => dispatch => {
 	dispatch(reqState('begin')); // 请求开始 --- 让页面变成Loading,等待跳转到列表页
 	API.deletePost(postId).then(() => {
-	    // 回跳
-	    window.history.go(-1)
+	    // 回跳至列表页
 	})
 }
 

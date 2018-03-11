@@ -12,8 +12,8 @@ class App extends Component {
 				<Route path="/react" render={() => <PostList path="react" />} />
 				<Route path="/redux" render={() => <PostList path="redux" />} />
 				<Route path="/udacity" render={() => <PostList path="udacity" />} />
-				<Route path="/detail" render={() => <PostDetail/>} />
-				<Route path="/create" render={() => <CreatePost/>} />
+				<Route path="/detail/:pid" component={PostDetail} />
+				<Route path="/create/:pid" component={CreatePost} />
 			</div>
 		);
   	}
