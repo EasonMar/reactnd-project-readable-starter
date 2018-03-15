@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import PostList from './PostList.js';
-import PostDetail from './PostDetail.js';
-import CreatePost from './CreatePost.js';
+import { connect } from 'react-redux';
+import { Route, withRouter } from 'react-router-dom';
+import List from './List.js';
+import Detail from './Detail.js';
+import Create from './Create.js';
+import { fetchPosts,fetchCategories } from '../actions';
 
 class App extends Component {
+	componentWillMount(){
+		this.props.dispatch(fetchPosts());
+		this.props.dispatch(fetchCategories());
+	}
   	render() {
 		return (
 			<div className="app">
-				<Route path="/" exact render={() => <PostList path="default" />} />
-				<Route path="/react" render={() => <PostList path="react" />} />
-				<Route path="/redux" render={() => <PostList path="redux" />} />
-				<Route path="/udacity" render={() => <PostList path="udacity" />} />
-				<Route path="/detail/:pid" component={PostDetail} />
-				<Route path="/create/:pid" component={CreatePost} />
+				<Route path="/" exact component={List} />
+				<Route path="/list/:cat" component={List} />
+				<Route path="/detail/:pid" component={Detail} />
+				<Route path="/create/:pid" component={Create} />
 			</div>
 		);
   	}
 }
-
-export default App
+export default withRouter(connect()(App))

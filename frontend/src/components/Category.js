@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchCategories } from '../actions';
 
 class Category extends Component {
-	componentWillMount(){
-		this.props.initCategory()
-	}
 
 	render() {
-		const { categories, cateSelect } = this.props;
+		const { categories, cate } = this.props;
 		return(
 			<ul className="Category">
 				{
-					categories.map(cate=>(
-						<li key={cate.name}>
-							<Link to={`/${cate.path === 'default' ? '' : cate.path}`}>
-								{cate.name === cateSelect
-									? <span style={{color: 'red'}}>{cate.name}</span>
-									: <span>{cate.name}</span>
+					categories.map(category=>(
+						<li key={category.name}>
+							<Link to={category.path}>
+								{category.name === cate
+									? <span style={{color: 'red'}}>{category.name}</span>
+									: <span>{category.name}</span>
 								}
 							</Link>
 						</li>
@@ -29,17 +25,10 @@ class Category extends Component {
 	}
 }
 
-function mapStateToProps ({ categories, cateSelect }) {
+function mapStateToProps ({ categories }) {
 	return {
-		categories,
-		cateSelect
+		categories
 	}
 }
 
-function mapDispatchToProps (dispatch) {
-	return {
-		initCategory: () => dispatch(fetchCategories())
-	}
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Category)
+export default connect(mapStateToProps)(Category)

@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories,fetchAddPost } from '../actions';
+import { fetchAddPost } from '../actions';
 
 import Loading from 'react-loading';
 
 class CreatePost extends Component {
-	componentWillMount(){
-		this.props.initCategory()
-	}
 
 	submit(){
+		const {match,addPost,history} = this.props;
 		const post_param = {
-			id: this.props.match.params.pid,
+			id: match.params.pid,
 			timestamp: Date.now(),
 			title: this.title.value || 'no_title',
 			body: this.content.value || 'no_cotent',
@@ -19,12 +17,13 @@ class CreatePost extends Component {
 			category: this.category.value
 		}
 
-		// 新增帖子
-		this.props.addPost(post_param);
+		// 新增帖子 --- 如何异步跳至 detail?
+		addPost(post_param).then(()=>history.replace(`/detail/${post_param.id}`));
 	}
 
 	render() {
-		const {categories, cateSelect, reqState } = this.props;
+		const {categories, reqState, location } = this.props;
+		const cateSelect = location.state.category === 'Home' ? 'react' : location.state.category;
 		return(
 			<div className='createPost'
 				style={{pading: '20px',width: '50%',margin: '10px auto'}}
@@ -59,7 +58,7 @@ class CreatePost extends Component {
 								defaultValue={cateSelect}
 							>
 								{
-									categories.map(cate => (
+									categories.filter(cate => cate.name !== 'Home').map(cate => (
 										<option
 											key={cate.name}
 											value={cate.name}
@@ -89,17 +88,15 @@ class CreatePost extends Component {
 	}
 }
 
-function mapStateToProps ({ categories, cateSelect, reqState }) {
+function mapStateToProps ({ categories, reqState }) {
 	return {
 		categories,
-		cateSelect,
 		reqState
 	}
 }
 
 function mapDispatchToProps (dispatch) {
 	return {
-		initCategory: () => dispatch(fetchCategories()),
 		addPost: postParam => dispatch(fetchAddPost(postParam))
 	}
 }
