@@ -26,7 +26,10 @@ class List extends Component {
 								? <li className="no_post">尚无帖子……</li>
 								: content.map(post=>(
 									<li key={post.id}>
-										<Link to={`/detail/${post.id}`} >
+										<Link to={{
+											pathname: `/detail/${post.id}`,
+											state: { category: cat }
+										}} >
 											<span className="post_title">{post.title}</span>
 										</Link>
 										<br />
@@ -39,8 +42,8 @@ class List extends Component {
 							}
 						</ul>
 						<Link className="add_post" to={{
-							pathname:`/create/${getUuid()}`,
-							state:{category: cat}
+							pathname: `/create/${getUuid()}`,
+    						state: { category: cat }
 						}}>Add Post</Link>
 					</div>
 				}

@@ -8,6 +8,20 @@ import Loading from 'react-loading';
 import { timestampToTime } from '../utils/helper';
 
 class Detail extends Component {
+	deleteFn(postId){
+		const { del, history, location } = this.props;
+		del(postId).then(()=>{
+			const category = location.state.category;
+			const url = category === 'Home' ? '/' : `/list/${category}`;
+			history.replace(url); // 如何回退到具体的列表页？根据location.state.category(即使重新刷新页面,也能记录正确的category!)
+		});
+	}
+
+	editFn(postId){
+		const { history } = this.props;
+		history.push({pathname:`/edit/${postId}`});    // 怎么跳转？history.pushState
+	}
+
 	render() {
 		const { posts, match } = this.props;
 		const post = posts.find(post => post.id === match.params.pid);
@@ -29,8 +43,14 @@ class Detail extends Component {
 					</div>
 					<p className="content">{post.body}</p>
 					<Comments parentId={post.id} />
-					<button className="delete_post" onClick={()=>this.props.delPost(post.id)}>
-						Delete the Post
+					<button className="edit"
+							style={{marginRight: '20px'}}
+							onClick={()=>this.editFn(post.id)}
+					>
+						Edit
+					</button>
+					<button className="delete" onClick={()=>this.deleteFn(post.id)}>
+						Delete
 					</button>
 				</div>
 			</div>
@@ -46,7 +66,7 @@ function mapStateToProps ({ posts }) {
 
 function mapDispatchToProps (dispatch) {
 	return {
-	    delPost: postId => dispatch(fetchDelPost(postId))
+	    del: postId => dispatch(fetchDelPost(postId))
 	}
 }
 

@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 import {
 	GET_POSTS,
 	ADD_POST,
-	// EDIT_POST,
+	DELETE_POST,
+	EDIT_POST,
 	GET_COMMENTS,
 	INIT_CATEGORY,
 	REQ_STATE
@@ -16,6 +17,14 @@ function posts (state = [], action){
 		case ADD_POST :
 			return [
 				...state,
+				action.postObj
+			]
+		case DELETE_POST :
+			return state.filter(post => post.id !== action.postId)
+		case EDIT_POST :
+			// state.filter(post => post.id !== action.postId).push(action.postObjs) --- push会改变原来的数组,然后返回元素数量
+			return [
+				...state.filter(post => post.id !== action.postId),
 				action.postObj
 			]
 		default :
@@ -34,6 +43,8 @@ function comments (state = [], action){
 					content: action.content
 				}
 			]
+		case DELETE_POST :
+			return state.filter(post => post.parentId !== action.postId)
 		default :
 			return state;
 	}

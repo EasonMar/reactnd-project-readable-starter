@@ -1,43 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchAddPost } from '../actions';
+import { fetchEditPost } from '../actions';
 
 import Loading from 'react-loading';
 
-class Create extends Component {
+class Edit extends Component {
 
 	submit(){
-		const { match, addPost, history } = this.props;
+		const { match, editPost, history } = this.props;
 		const postData = {
-			id: match.params.pid,
 			timestamp: Date.now(),
 			title: this.title.value || 'no_title',
 			body: this.content.value || 'no_cotent',
 			author: this.author.value || 'nobody',
 			category: this.category.value
 		}
-
-		// 新增帖子 --- 异步跳至detail --- 同时带上当前category信息
-		addPost(postData).then(() => history.replace({
-			pathname: `/detail/${postData.id}`,
-			state: {category: postData.category}
-		}));
+		const postId = match.params.pid;
+		// 编辑帖子 --- 异步跳至回detail --- 直接用go(-1)跳回到detail页.再次goback则回到进入编辑之前的category,合情合理
+		editPost(postId, postData).then(() => history.go(-1));
 	}
 
 	render() {
-		const {categories, reqState, location } = this.props;
-		const cateSelect = location.state.category === 'Home' ? 'react' : location.state.category;
+		const { posts, categories, match } = this.props;
+		const post = posts.find(post => post.id === match.params.pid);
 		return(
-
-			reqState === 'begin'
+			post === undefined // 请求未完成
 			? <Loading delay={50} type='spokes' color='#222' className='loading' />
-			: <div className='createPost'>
+			: <div className='editPost'>
 				<label>Title:
 					<input
 						type='text'
 						className='title'
 						ref={input=> this.title = input}
 						style={{marginLeft:'10px'}}
+						defaultValue={post.title}
 					/>
 				</label>
 				<br /><br />
@@ -47,6 +43,7 @@ class Create extends Component {
 						className='author'
 						ref={input=> this.author = input}
 						style={{marginLeft:'10px'}}
+						defaultValue={post.author}
 					/>
 				</label>
 				<br /><br />
@@ -55,7 +52,7 @@ class Create extends Component {
 						className='category'
 						ref={select=> this.category = select}
 						style={{marginLeft:'10px'}}
-						defaultValue={cateSelect}
+						defaultValue={post.category}
 					>
 						{
 							categories.filter(cate => cate.name !== 'Home').map(cate => (
@@ -75,27 +72,27 @@ class Create extends Component {
 					<textarea
 						style={{width: '400px',height: '160px', resize:'none'}}
 						ref={input=> this.content = input}
+						defaultValue={post.body}
 					></textarea>
 				</label>
 				<br /><br />
 				<button onClick={()=>this.submit()}>submit</button>
 			</div>
-
 		)
 	}
 }
 
-function mapStateToProps ({ categories, reqState }) {
+function mapStateToProps ({ posts, categories }) {
 	return {
-		categories,
-		reqState
+		posts,
+		categories
 	}
 }
 
 function mapDispatchToProps (dispatch) {
 	return {
-		addPost: postParam => dispatch(fetchAddPost(postParam))
+		editPost: (postId, postData) => dispatch(fetchEditPost(postId, postData))
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Create)
+export default connect(mapStateToProps, mapDispatchToProps)(Edit)

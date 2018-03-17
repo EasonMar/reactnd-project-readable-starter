@@ -4,7 +4,7 @@ body {
   font-family: sans-serif;
 }
 
-/* 目录 */
+/* Category */
 .Category{
 	overflow: hidden;
 	margin: 20px 10px 0;
@@ -20,7 +20,7 @@ body {
 }
 
 
-/* 列表页 */
+/* List */
 .post_list li{
 	padding: 10px;
 }
@@ -70,7 +70,7 @@ body {
 	border-radius: 10px;
 }
 
-/* 详情页 */
+/* Detail */
 
 .post_detail{
 	padding: 30px;
@@ -110,4 +110,19 @@ body {
 
 .post_detail .time{
 	color: #999;
+}
+
+/* Create */
+.createPost{
+	padding: 20px;
+	width: 50%;
+	margin: 10px auto;
+}
+
+
+/* Edit */
+.editPost{
+	padding: 20px;
+	width: 50%;
+	margin: 10px auto;
 }

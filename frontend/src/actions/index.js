@@ -24,10 +24,16 @@ export const addPost = postObj => ({
 	postObj
 })
 
+export const delPost = postId => ({
+	type: DELETE_POST,
+	postId
+})
+
 // 编辑
-export const editPost = postObj => ({
+export const editPost = (postId, postObj) => ({
 	type: EDIT_POST,
-	postObj
+	postObj,
+	postId
 })
 
 // 评论
@@ -59,19 +65,25 @@ export const fetchPosts = () => dispatch => {
 	})
 }
 
-export const fetchAddPost = postParam => dispatch => {
-	dispatch(reqState('begin')); // 请求开始 --- 让新增/编辑页页面变成Loading,等待跳转到详情页
-	return API.addPost(postParam).then(postObj =>
+export const fetchAddPost = postData => dispatch => {
+	dispatch(reqState('begin')); // 请求开始 --- 让新增页页面变成Loading,等待跳转到详情页
+	return API.addPost(postData).then(postObj =>
 	    dispatch(addPost(postObj)) // 请求结果
-	    // replace到详情页
 	).then(()=>dispatch(reqState('end')))
 }
 
 export const fetchDelPost = postId => dispatch => {
 	dispatch(reqState('begin')); // 请求开始 --- 让页面变成Loading,等待跳转到列表页
-	return API.deletePost(postId).then(() => {
-	    // replace至列表页 - 或返回至列表页
-	})
+	return API.deletePost(postId).then(postObj =>
+		dispatch(delPost(postObj.id)) // 传入then的参数是上一步的结果...这里为postObj
+	).then(() => dispatch(reqState('end')))
+}
+
+export const fetchEditPost = (postId, postData) => dispatch => {
+	dispatch(reqState('begin')); // 请求开始 --- 让编辑页页面变成Loading,等待跳转到详情页
+	return API.editPost(postId, postData).then(postObj =>
+	    dispatch(editPost(postObj.id, postObj)) // 请求结果
+	).then(()=>dispatch(reqState('end')))
 }
 
 export const fetchComments = postId => dispatch => {
