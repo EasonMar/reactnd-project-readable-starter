@@ -33,17 +33,21 @@ class Comments extends Component {
 				<ul className="commentList">
 					{
 						myComment.comments.length === 0
-						? <li className="no_comment"><span>快来第一个评论吧……</span></li>
+						? <li className="no_comment"><span>Come to make the first comment!</span></li>
 						: myComment.comments.map(com => (
 							<li key={com.id}>
+								<div className="voter">
+									<div className="up"></div>
+									<div className="down"></div>
+								</div>
+								<span className="score">{com.voteScore}</span>
 								<span>{com.body}</span>
 								<span className="author">{com.author}</span>
-								<span>{com.voteScore}</span>
 								<span className="time">{timestampToTime(com.timestamp)}</span>
 								<button className="edit"
 									onClick={()=> this.openModal(com)}
-								>edit com</button>
-								<button onClick={()=> delComment(com.id)}>del com</button>
+								>edit</button>
+								<button onClick={()=> delComment(com.id)}>del</button>
 							</li>
 						))
 					}

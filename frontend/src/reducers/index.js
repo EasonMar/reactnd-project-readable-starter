@@ -7,13 +7,14 @@ import {
 	GET_COMMENTS,
 	ADD_COMMENT,
 	DELETE_COMMENT,
+	EDIT_COMMENT,
 	INIT_CATEGORY,
 	REQ_STATE,
 	MODAL_STATUS,
 	MODAL_CONTENT
 } from '../actions';
 
-// 估计也要优化state的结构为{},方便state的变更
+// 估计也要优化state的结构为{},方便state的变更 --  但是API请求回来的就是Array
 function posts (state = [], action){
 	switch (action.type){
 		case GET_POSTS :
@@ -31,6 +32,15 @@ function posts (state = [], action){
 				...state.filter(post => post.id !== action.postId),
 				action.postObj
 			]
+		case ADD_COMMENT :
+			const {parentId} = action.data;
+			let addCommentPost = state.find(post => post.id === parentId);
+			addCommentPost.commentCount++; // 实验证明,这样做直接修改了state？！
+			return state; // 直接返回state都可以？！
+		case DELETE_COMMENT :
+			let delCommentPost = state.find(post => post.id === action.parentId);
+			delCommentPost.commentCount--; // 实验证明,这样做直接修改了state！会有什么影响么？
+			return state;
 		default :
 			return state;
 	}
@@ -51,6 +61,16 @@ function comments (state = [], action){
 			return [
 				...state.filter(comment => comment.parentId !== parentId),
 				addPostComments
+			]
+		case EDIT_COMMENT :
+			let editPostComments = state.find(comment => comment.parentId === action.data.parentId);
+			editPostComments.comments = [
+				...editPostComments.comments.filter(comment => comment.id !== action.data.comment.id),
+				action.data.comment
+			]
+			return [
+				...state.filter(comment => comment.parentId !== parentId),
+				editPostComments
 			]
 		case DELETE_COMMENT :
 			let delPostComments = state.find(comment => comment.parentId === action.parentId);

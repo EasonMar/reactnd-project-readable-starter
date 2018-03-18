@@ -13,7 +13,7 @@ class Category extends Component {
 						<li key={category.name}>
 							<Link to={category.path}>
 								{category.name === cate
-									? <span style={{color: 'red'}}>{category.name}</span>
+									? <span style={{color: 'darkblue'}}>{category.name}</span>
 									: <span>{category.name}</span>
 								}
 							</Link>

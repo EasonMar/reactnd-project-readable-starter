@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
-import { modalStatus, modalContent, fetchAddComment } from '../actions';
+import { modalStatus, modalContent, fetchAddComment, fetchEditComment } from '../actions';
 import { getUuid } from '../utils/helper';
 
 class UpdateComment extends Component {
@@ -18,7 +18,7 @@ class UpdateComment extends Component {
 	}
 
 	submit() {
-		const { parentId, addComment, modalContent, modalStatus } = this.props;
+		const { parentId, addComment, editComment, modalContent, modalStatus } = this.props;
 		const { content } = this.props.modal;
 		const commentData = {
 			id: content ? content.id : getUuid(),
@@ -27,7 +27,9 @@ class UpdateComment extends Component {
 			author: this.author.value,
 			parentId: parentId
 		}
-		addComment(commentData).then(()=>{
+
+		const createOrEdit = content ? editComment : addComment;
+		createOrEdit(commentData).then(()=>{
 			modalStatus(false);
 			modalContent(null);
 		})
@@ -80,7 +82,8 @@ function mapDispatchToProps (dispatch) {
 	return {
 		modalStatus: status => dispatch(modalStatus(status)),
 		modalContent: content => dispatch(modalContent(content)),
-		addComment: commentData => dispatch(fetchAddComment(commentData))
+		addComment: commentData => dispatch(fetchAddComment(commentData)),
+		editComment: commentData => dispatch(fetchEditComment(commentData))
 	}
 }
 

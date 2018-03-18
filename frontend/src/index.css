@@ -4,19 +4,32 @@ body {
   font-family: sans-serif;
 }
 
+li{
+	position: relative;
+	list-style: none;
+}
+
 button{
-	padding: 2px;
+	min-width: 40px;
+	padding: 2px 6px;
 	background: red;
 	border: 1px solid red;
-    border-radius: 6px;
+    border-radius: 8px;
     color: #fff;
     cursor: pointer;
+}
+
+input,textarea,select{
+	border: 1px solid gray;
+	border-radius: 8px;
+	padding: 4px 8px;
+	font-family: arial,"微软雅黑";
 }
 
 button.edit{
 	background: darkblue;
 	border-color: darkblue;
-	margin-right: 20px;
+	margin-right: 14px;
 }
 
 button.submit{
@@ -26,6 +39,48 @@ button.submit{
 	font-size: 20px;
 	font-weight: bold;
 	border-radius: 10px;
+}
+
+.voter{
+	position: absolute;
+	top: 0px;
+	left: -22px;
+	text-align: center;
+	font-size: 12px;
+}
+
+.voter div{
+	cursor: pointer;
+}
+
+.voter .up{
+	width:0;
+    height:0;
+    border-width:0 6px 10px;
+    border-style:solid;
+    border-color:transparent transparent #eb9797;/*透明 透明  灰*/
+    position:relative;
+    margin-bottom: 10px;
+}
+
+.voter .down{
+	width:0;
+    height:0;
+    border-width:10px 6px 0;
+    border-style:solid;
+    border-color:#eb9797 transparent transparent;/*灰 透明 透明 */
+    position:relative;
+}
+
+.post_list .voter{
+	top: 50%;
+	transform: translateY(-50%);
+	left: -14px;
+}
+
+.no_comment ,.no_post{
+	color: #aaa;
+	font-size: 14px;
 }
 
 /* Category */
@@ -38,9 +93,13 @@ button.submit{
 	cursor: pointer;
 	float: left;
 	margin-right: 30px;
-	list-style: none;
 	font-size: 18px;
 	font-weight: bold;
+}
+
+.Category a{
+	text-decoration: none;
+	color: #aaa;
 }
 
 
@@ -148,7 +207,18 @@ button.submit{
 
 /* Comment */
 .commentList li{
-	margin-bottom: 10px;
+	margin-bottom: 30px;
+}
+
+.commentList .score{
+	border-radius: 50%;
+	display: inline-block;
+    width: 14px;
+    height: 14px;
+	text-align: center;
+	color: #fff;
+	font-weight: bold;
+	background: red;
 }
 
 

@@ -8,6 +8,7 @@ export const EDIT_POST = 'EDIT_POST';
 export const GET_COMMENTS = 'GET_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
+export const EDIT_COMMENT = 'EDIT_COMMENT';
 
 export const INIT_CATEGORY = 'INIT_CATEGORY';
 export const REQ_STATE = 'REQ_STATE'; // 请求状态...
@@ -47,6 +48,11 @@ export const getComments = (parentId, comments) => ({
 
 export const addComment = (parentId, comment) => ({
 	type: ADD_COMMENT,
+	data: { parentId, comment }
+})
+
+export const editComment = (parentId, comment) => ({
+	type: EDIT_COMMENT,
 	data: { parentId, comment }
 })
 
@@ -97,17 +103,15 @@ export const fetchAddPost = postData => dispatch => {
 }
 
 export const fetchDelPost = postId => dispatch => {
-	dispatch(reqState('begin')); // 请求开始 --- 让页面变成Loading,等待跳转到列表页
 	return API.deletePost(postId).then(postObj =>
 		dispatch(delPost(postObj.id)) // 传入then的参数是上一步的结果...这里为postObj
-	).then(() => dispatch(reqState('end')))
+	)
 }
 
 export const fetchEditPost = (postId, postData) => dispatch => {
-	dispatch(reqState('begin')); // 请求开始 --- 让编辑页页面变成Loading,等待跳转到详情页
 	return API.editPost(postId, postData).then(postObj =>
 	    dispatch(editPost(postObj.id, postObj)) // 请求结果
-	).then(()=>dispatch(reqState('end')))
+	)
 }
 
 export const fetchComments = postId => dispatch => {
@@ -119,6 +123,12 @@ export const fetchComments = postId => dispatch => {
 export const fetchAddComment = commentData => dispatch => {
 	return API.addComment(commentData).then(comment =>
 		dispatch(addComment(comment.parentId, comment))
+	)
+}
+
+export const fetchEditComment = commentData => dispatch => {
+	return API.editComment(commentData.id, commentData).then(comment =>
+		dispatch(editComment(comment.parentId, comment))
 	)
 }
 

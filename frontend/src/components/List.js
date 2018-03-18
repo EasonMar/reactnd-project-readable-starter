@@ -23,9 +23,13 @@ class List extends Component {
 					: <div className="list_content">
 						<ul className="post_list">
 							{content.length === 0
-								? <li className="no_post">尚无帖子……</li>
+								? <li className="no_post">Don't have post yet</li>
 								: content.map(post=>(
 									<li key={post.id}>
+										<div className="voter">
+											<div className="up"></div>
+											<div className="down"></div>
+										</div>
 										<Link to={{
 											pathname: `/detail/${post.id}`,
 											state: { category: cat }
