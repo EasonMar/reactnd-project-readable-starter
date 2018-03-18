@@ -31,6 +31,16 @@ function posts (state = [], action){
 				...state.filter(post => post.id !== action.postId),
 				action.postObj
 			]
+		case ADD_COMMENT :
+			const {parentId} = action.data;
+			let addCommentPost = state.find(post => post.id === parentId);
+			addCommentPost.commentCount++; // 实验证明,这样做直接修改了state！！
+			console.log(state);
+			return state;
+		case DELETE_COMMENT :
+			let delCommentPost = state.find(post => post.id === action.parentId);
+			delCommentPost.commentCount--; // 实验证明,这样做直接修改了state！会有什么影响么？
+			return state;
 		default :
 			return state;
 	}
@@ -48,6 +58,7 @@ function comments (state = [], action){
 			const { parentId, comment } = action.data;
 			let addPostComments = state.find(comment => comment.parentId === parentId); // 查找需要处理的comment集
 			addPostComments.comments.push(comment); // 给comment集增加评论
+			console.log(state) // 这里也是直接更改了state,但是为啥要返回以下东西UI才能刷新？直接返回state不会刷新UI？
 			return [
 				...state.filter(comment => comment.parentId !== parentId),
 				addPostComments
@@ -57,6 +68,7 @@ function comments (state = [], action){
 			delPostComments.comments = [
 				...delPostComments.comments.filter(comment => comment.id !== action.commentId)
 			]
+			console.log(state) // 这里也是直接更改了state,但是为啥要返回以下东西UI才能刷新？直接返回state不会刷新UI？
 			return [
 				...state.filter(comment => comment.parentId !== action.parentId),
 				delPostComments

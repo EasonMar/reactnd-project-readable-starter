@@ -104,10 +104,9 @@ export const fetchDelPost = postId => dispatch => {
 }
 
 export const fetchEditPost = (postId, postData) => dispatch => {
-	dispatch(reqState('begin')); // 请求开始 --- 让编辑页页面变成Loading,等待跳转到详情页
 	return API.editPost(postId, postData).then(postObj =>
-	    dispatch(editPost(postObj.id, postObj)) // 请求结果
-	).then(()=>dispatch(reqState('end')))
+	    dispatch(editPost(postObj.id, postObj))
+	)
 }
 
 export const fetchComments = postId => dispatch => {
