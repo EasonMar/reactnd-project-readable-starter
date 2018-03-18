@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchComments } from '../actions';
-
+import { fetchComments, fetchDelComment, modalStatus, modalContent } from '../actions';
+import UpdateComment from './UpdateComment'
 import Loading from 'react-loading';
 import { timestampToTime } from '../utils/helper';
 
@@ -13,26 +13,48 @@ class Comments extends Component {
 			fetchComments(parentId);
 		}
 	}
+
+	// 打开Modal
+	openModal(content){
+		var realContent = content || null;
+		const {modalContent,modalStatus} = this.props;
+		modalStatus(true);
+		modalContent(realContent);
+	}
+
 	render() {
-		const { comments, parentId } = this.props;
+		const { comments, parentId, delComment } = this.props;
 		const myComment = comments.find(com => com.parentId === parentId );
 		return (
 			myComment === undefined // 请求未完成
 			? <Loading delay={50} type='spokes' color='#222' className='loading' />
-			: <ul className="commentArea">
-				{
-					myComment.content.length === 0
-					? <li className="no_comment">尚无评论……</li>
-					: myComment.content.map(com => (
-						<li key={com.id}>
-							<span>{com.body}</span>
-							<span>{com.author}</span>
-							<span>{com.voteScore}</span>
-							<span>{timestampToTime(com.timestamp)}</span>
-						</li>
-					))
-				}
-			</ul>
+			: <div className="commentArea">
+				<h4>Comment Area</h4>
+				<ul className="commentList">
+					{
+						myComment.comments.length === 0
+						? <li className="no_comment"><span>快来第一个评论吧……</span></li>
+						: myComment.comments.map(com => (
+							<li key={com.id}>
+								<span>{com.body}</span>
+								<span className="author">{com.author}</span>
+								<span>{com.voteScore}</span>
+								<span className="time">{timestampToTime(com.timestamp)}</span>
+								<button className="edit"
+									onClick={()=> this.openModal(com)}
+								>edit com</button>
+								<button onClick={()=> delComment(com.id)}>del com</button>
+							</li>
+						))
+					}
+				</ul>
+
+				<button className="add"
+					onClick={()=> this.openModal()}
+				>Add comment</button>
+
+				<UpdateComment parentId={parentId} />
+			</div>
 		)
 	}
 }
@@ -47,6 +69,9 @@ function mapStateToProps ({ comments }) {
 function mapDispatchToProps (dispatch) {
 	return {
 		fetchComments: postId =>dispatch(fetchComments(postId)),
+		delComment: commentId => dispatch(fetchDelComment(commentId)),
+		modalStatus: status => dispatch(modalStatus(status)),
+		modalContent: content => dispatch(modalContent(content)),
 	}
 }
 

@@ -17,7 +17,9 @@ class Edit extends Component {
 		}
 		const postId = match.params.pid;
 		// 编辑帖子 --- 异步跳至回detail --- 直接用go(-1)跳回到detail页.再次goback则回到进入编辑之前的category,合情合理
-		editPost(postId, postData).then(() => history.go(-1));
+		editPost(postId, postData)
+		.then(() => history.go(-1))
+		.catch(error => alert(error)); // 这样可以有错误处理了！
 	}
 
 	render() {
@@ -76,7 +78,7 @@ class Edit extends Component {
 					></textarea>
 				</label>
 				<br /><br />
-				<button onClick={()=>this.submit()}>submit</button>
+				<button className="submit" onClick={()=>this.submit()}>submit</button>
 			</div>
 		)
 	}

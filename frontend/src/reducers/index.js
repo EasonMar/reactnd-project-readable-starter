@@ -5,11 +5,15 @@ import {
 	DELETE_POST,
 	EDIT_POST,
 	GET_COMMENTS,
+	ADD_COMMENT,
+	DELETE_COMMENT,
 	INIT_CATEGORY,
-	REQ_STATE
+	REQ_STATE,
+	MODAL_STATUS,
+	MODAL_CONTENT
 } from '../actions';
 
-
+// 估计也要优化state的结构为{},方便state的变更
 function posts (state = [], action){
 	switch (action.type){
 		case GET_POSTS :
@@ -32,19 +36,31 @@ function posts (state = [], action){
 	}
 }
 
-// 结构需要优化
+// 好恶心！结构需要优化 --- 用{}来组织或许会更方便编辑！
 function comments (state = [], action){
 	switch (action.type){
 		case GET_COMMENTS :
 			return [
 				...state,
-				{
-					parentId: action.parentId,
-					content: action.content
-				}
+				action.data
 			]
-		case DELETE_POST :
-			return state.filter(post => post.parentId !== action.postId)
+		case ADD_COMMENT :
+			const { parentId, comment } = action.data;
+			let addPostComments = state.find(comment => comment.parentId === parentId); // 查找需要处理的comment集
+			addPostComments.comments.push(comment); // 给comment集增加评论
+			return [
+				...state.filter(comment => comment.parentId !== parentId),
+				addPostComments
+			]
+		case DELETE_COMMENT :
+			let delPostComments = state.find(comment => comment.parentId === action.parentId);
+			delPostComments.comments = [
+				...delPostComments.comments.filter(comment => comment.id !== action.commentId)
+			]
+			return [
+				...state.filter(comment => comment.parentId !== action.parentId),
+				delPostComments
+			]
 		default :
 			return state;
 	}
@@ -68,9 +84,27 @@ function reqState (state = 'done', action){
 	}
 }
 
+function modal (state = {status:false,content:null}, action){
+	switch (action.type){
+		case MODAL_STATUS :
+			return {
+				...state,
+				status : action.status
+			}
+		case MODAL_CONTENT :
+			return {
+				...state,
+				content: action.content
+			}
+		default :
+			return state;
+	}
+}
+
 export default combineReducers({
 	posts,
 	comments,
 	categories,
-	reqState
+	reqState,
+	modal
 })

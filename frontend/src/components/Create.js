@@ -78,7 +78,7 @@ class Create extends Component {
 					></textarea>
 				</label>
 				<br /><br />
-				<button onClick={()=>this.submit()}>submit</button>
+				<button className="submit" onClick={()=>this.submit()}>submit</button>
 			</div>
 
 		)

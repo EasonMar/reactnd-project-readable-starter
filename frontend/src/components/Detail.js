@@ -32,7 +32,7 @@ class Detail extends Component {
 				<div className="content">
 					<h3>
 						{post.voteScore > 0
-							? <span className="vote posi">+{post.voteScore}</span>
+							? <span className="vote posi">{`+${post.voteScore}`}</span>
 							: <span className="vote nega">{post.voteScore}</span>
 						}
 						<span className="title">{post.title}</span>
@@ -42,16 +42,13 @@ class Detail extends Component {
 						<span className="time">{timestampToTime(post.timestamp)}</span>
 					</div>
 					<p className="content">{post.body}</p>
-					<Comments parentId={post.id} />
-					<button className="edit"
-							style={{marginRight: '20px'}}
-							onClick={()=>this.editFn(post.id)}
-					>
-						Edit
+					<button className="edit" onClick={()=>this.editFn(post.id)}>
+						Edit The Post
 					</button>
 					<button className="delete" onClick={()=>this.deleteFn(post.id)}>
-						Delete
+						Delete The Post
 					</button>
+					<Comments parentId={post.id} />
 				</div>
 			</div>
 		)

@@ -12,6 +12,9 @@ export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const INIT_CATEGORY = 'INIT_CATEGORY';
 export const REQ_STATE = 'REQ_STATE'; // 请求状态...
 
+export const MODAL_STATUS = 'MODAL_STATUS';
+export const MODAL_CONTENT = 'MODAL_CONTENT';
+
 // 获取所有posts
 export const getPosts = postsArr => ({
 	type: GET_POSTS,
@@ -37,10 +40,20 @@ export const editPost = (postId, postObj) => ({
 })
 
 // 评论
-export const getComments = (parentId,content) => ({
+export const getComments = (parentId, comments) => ({
 	type: GET_COMMENTS,
-	content,
-	parentId
+	data: { parentId, comments }
+})
+
+export const addComment = (parentId, comment) => ({
+	type: ADD_COMMENT,
+	data: { parentId, comment }
+})
+
+export const delComment = (parentId, commentId) => ({
+	type: DELETE_COMMENT,
+	parentId,
+	commentId
 })
 
 // ===== 分类 =====
@@ -55,6 +68,17 @@ export const reqState = state => ({
 	state // 请求的状态
 })
 
+// modal的状态
+export const modalStatus = status=> ({
+	type: MODAL_STATUS,
+	status
+})
+
+// modal的内容
+export const modalContent = content=> ({
+	type: MODAL_CONTENT,
+	content
+})
 
 // ===== thunk =====
 export const fetchPosts = () => dispatch => {
@@ -90,6 +114,18 @@ export const fetchComments = postId => dispatch => {
 	API.getComments(postId).then(comments => {
 		dispatch(getComments(postId,comments))
 	})
+}
+
+export const fetchAddComment = commentData => dispatch => {
+	return API.addComment(commentData).then(comment =>
+		dispatch(addComment(comment.parentId, comment))
+	)
+}
+
+export const fetchDelComment = commentId => dispatch => {
+	return API.deleteComment(commentId).then(comment =>
+		dispatch(delComment(comment.parentId, comment.id))
+	)
 }
 
 export const fetchCategories = () => dispatch => {

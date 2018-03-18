@@ -4,6 +4,30 @@ body {
   font-family: sans-serif;
 }
 
+button{
+	padding: 2px;
+	background: red;
+	border: 1px solid red;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+}
+
+button.edit{
+	background: darkblue;
+	border-color: darkblue;
+	margin-right: 20px;
+}
+
+button.submit{
+	border-color: green;
+	background: green;
+	padding: 8px 10px;
+	font-size: 20px;
+	font-weight: bold;
+	border-radius: 10px;
+}
+
 /* Category */
 .Category{
 	overflow: hidden;
@@ -66,7 +90,7 @@ body {
 	height: 40px;
 	line-height: 40px;
 	text-align: center;
-	background: red;
+	background: green;
 	border-radius: 10px;
 }
 
@@ -81,11 +105,14 @@ body {
 	font-size: 10px;
 }
 .post_detail .vote{
-	font-size: 18px;
-	font-weight: bold;
+	font-size: 15px;
 	margin-right: 5px;
 	border: 2px solid black;
 	border-radius: 50%;
+	display: inline-block;
+    width: 22px;
+    height: 22px;
+	text-align: center;
 }
 
 .post_detail .vote.posi{
@@ -112,17 +139,42 @@ body {
 	color: #999;
 }
 
-/* Create */
-.createPost{
+/* Create  Edit  UpgadeComment */
+.createPost, .editPost, .update_comment{
 	padding: 20px;
 	width: 50%;
 	margin: 10px auto;
 }
 
+/* Comment */
+.commentList li{
+	margin-bottom: 10px;
+}
 
-/* Edit */
-.editPost{
-	padding: 20px;
-	width: 50%;
-	margin: 10px auto;
+
+/* Modal */
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.modal {
+  position: absolute;
+  top: 40px;
+  left: 200px;
+  right: 200px;
+  bottom: 40px;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
+  min-width: 500px;
 }
