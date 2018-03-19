@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchComments, fetchDelComment, modalStatus, modalContent } from '../actions';
+import { fetchComments, fetchDelComment, modalStatus, modalContent, fetchVoteComment } from '../actions';
 import UpdateComment from './UpdateComment'
 import Loading from 'react-loading';
 import { timestampToTime } from '../utils/helper';
@@ -23,7 +23,7 @@ class Comments extends Component {
 	}
 
 	render() {
-		const { comments, parentId, delComment } = this.props;
+		const { comments, parentId, delComment, voteComment } = this.props;
 		const myComment = comments.find(com => com.parentId === parentId );
 		return (
 			myComment === undefined // 请求未完成
@@ -37,8 +37,8 @@ class Comments extends Component {
 						: myComment.comments.map(com => (
 							<li key={com.id}>
 								<div className="voter">
-									<div className="up"></div>
-									<div className="down"></div>
+									<div className="up" onClick={()=> voteComment(com.id, 'upVote')}></div>
+									<div className="down" onClick={()=> voteComment(com.id, 'downVote')}></div>
 								</div>
 								<span className="score">{com.voteScore}</span>
 								<span>{com.body}</span>
@@ -74,6 +74,7 @@ function mapDispatchToProps (dispatch) {
 	return {
 		fetchComments: postId =>dispatch(fetchComments(postId)),
 		delComment: commentId => dispatch(fetchDelComment(commentId)),
+		voteComment: (commentId,option) => dispatch(fetchVoteComment(commentId,option)),
 		modalStatus: status => dispatch(modalStatus(status)),
 		modalContent: content => dispatch(modalContent(content)),
 	}

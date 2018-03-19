@@ -11,7 +11,9 @@ import {
 	INIT_CATEGORY,
 	REQ_STATE,
 	MODAL_STATUS,
-	MODAL_CONTENT
+	MODAL_CONTENT,
+	VOTE_POST,
+	VOTE_COMMENT
 } from '../actions';
 
 // 估计也要优化state的结构为{},方便state的变更 --  但是API请求回来的就是Array
@@ -32,9 +34,14 @@ function posts (state = [], action){
 				...state.filter(post => post.id !== action.postId),
 				action.postObj
 			]
+		case VOTE_POST :
+			return state.map(post => {
+				let newPost = action.postObj;
+				if(post.id === newPost.id) return newPost;
+				return post;
+			})
 		case ADD_COMMENT :
-			const {parentId} = action.data;
-			let addCommentPost = state.find(post => post.id === parentId);
+			let addCommentPost = state.find(post => post.id === action.comment.parentId);
 			addCommentPost.commentCount++; // 实验证明,这样做直接修改了state？！
 			return state; // 直接返回state都可以？！
 		case DELETE_COMMENT :
@@ -55,34 +62,47 @@ function comments (state = [], action){
 				action.data
 			]
 		case ADD_COMMENT :
-			const { parentId, comment } = action.data;
-			let addPostComments = state.find(comment => comment.parentId === parentId); // 查找需要处理的comment集
-			addPostComments.comments.push(comment); // 给comment集增加评论
 			return [
-				...state.filter(comment => comment.parentId !== parentId),
-				addPostComments
+				...state.filter(commentSet => commentSet.parentId !== action.comment.parentId), // 筛出其他comment集
+				newComments(state,action)
 			]
 		case EDIT_COMMENT :
-			let editPostComments = state.find(comment => comment.parentId === action.data.parentId);
-			editPostComments.comments = [
-				...editPostComments.comments.filter(comment => comment.id !== action.data.comment.id),
-				action.data.comment
-			]
 			return [
-				...state.filter(comment => comment.parentId !== parentId),
-				editPostComments
+				...state.filter(commentSet => commentSet.parentId !== action.comment.parentId),
+				newComments(state,action)
 			]
 		case DELETE_COMMENT :
-			let delPostComments = state.find(comment => comment.parentId === action.parentId);
-			delPostComments.comments = [
-				...delPostComments.comments.filter(comment => comment.id !== action.commentId)
+			let involveComSet = state.find(commentSet => commentSet.parentId === action.parentId);
+			involveComSet.comments = [
+				...involveComSet.comments.filter(comment => comment.id !== action.commentId)
 			]
 			return [
 				...state.filter(comment => comment.parentId !== action.parentId),
-				delPostComments
+				involveComSet
+			]
+		case VOTE_COMMENT:
+			return [
+				...state.filter(commentSet=> commentSet.parentId !== action.comment.parentId),
+				newComments(state,action)
 			]
 		default :
 			return state;
+	}
+
+	// comment数据处理函数...
+	function newComments(_state, _action){
+		let nowInvolveCommentSet, involveCommentSet;
+		// 查找需要处理的comment集对象
+		involveCommentSet = _state.find(commentSet => commentSet.parentId === _action.comment.parentId);
+		nowInvolveCommentSet = {
+			...involveCommentSet,
+			// 更新当前处理的comment集
+			comments: [
+				...involveCommentSet.comments.filter(comment => comment.id !== _action.comment.id),
+				_action.comment
+			]
+		}
+		return nowInvolveCommentSet;
 	}
 }
 

@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 
 import Loading from 'react-loading';
 import Category from './Category.js';
+import { fetchVotePost } from '../actions';
 import { timestampToTime, getUuid } from '../utils/helper';
 
 
 class List extends Component {
   	render() {
-  		const { posts, reqState, match } = this.props;
+  		const { posts, reqState, match, votePost } = this.props;
 
   		// 当前分类/路由
   		const cat = match.params.cat || 'Home';
@@ -27,8 +28,8 @@ class List extends Component {
 								: content.map(post=>(
 									<li key={post.id}>
 										<div className="voter">
-											<div className="up"></div>
-											<div className="down"></div>
+											<div className="up" onClick={()=>votePost(post.id, "upVote")}></div>
+											<div className="down" onClick={()=>votePost(post.id,"downVote")}></div>
 										</div>
 										<Link to={{
 											pathname: `/detail/${post.id}`,
@@ -64,4 +65,10 @@ function mapStateToProps ({ posts, reqState }) {
 	}
 }
 
-export default withRouter(connect(mapStateToProps)(List))
+function mapDispatchToProps (dispatch) {
+	return {
+		votePost: (postId, option) => dispatch(fetchVotePost(postId, option)),
+	}
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List))

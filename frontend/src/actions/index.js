@@ -16,6 +16,9 @@ export const REQ_STATE = 'REQ_STATE'; // 请求状态...
 export const MODAL_STATUS = 'MODAL_STATUS';
 export const MODAL_CONTENT = 'MODAL_CONTENT';
 
+export const VOTE_POST = 'VOTE_POST';
+export const VOTE_COMMENT = 'VOTE_COMMENT';
+
 // 获取所有posts
 export const getPosts = postsArr => ({
 	type: GET_POSTS,
@@ -46,14 +49,14 @@ export const getComments = (parentId, comments) => ({
 	data: { parentId, comments }
 })
 
-export const addComment = (parentId, comment) => ({
+export const addComment = (comment) => ({
 	type: ADD_COMMENT,
-	data: { parentId, comment }
+	comment
 })
 
-export const editComment = (parentId, comment) => ({
+export const editComment = (comment) => ({
 	type: EDIT_COMMENT,
-	data: { parentId, comment }
+	comment
 })
 
 export const delComment = (parentId, commentId) => ({
@@ -84,6 +87,17 @@ export const modalStatus = status=> ({
 export const modalContent = content=> ({
 	type: MODAL_CONTENT,
 	content
+})
+
+// 投票
+export const voteForPost = (postObj) =>({
+	type: VOTE_POST,
+	postObj
+})
+
+export const voteForComment = (comment) =>({
+	type: VOTE_COMMENT,
+	comment
 })
 
 // ===== thunk =====
@@ -122,13 +136,13 @@ export const fetchComments = postId => dispatch => {
 
 export const fetchAddComment = commentData => dispatch => {
 	return API.addComment(commentData).then(comment =>
-		dispatch(addComment(comment.parentId, comment))
+		dispatch(addComment(comment))
 	)
 }
 
 export const fetchEditComment = commentData => dispatch => {
 	return API.editComment(commentData.id, commentData).then(comment =>
-		dispatch(editComment(comment.parentId, comment))
+		dispatch(editComment(comment))
 	)
 }
 
@@ -144,4 +158,16 @@ export const fetchCategories = () => dispatch => {
 		dispatch(initCategory(categories))
 	    dispatch(reqState('end')); // 请求结束
 	})
+}
+
+export const fetchVotePost = (postId,option) => dispatch => {
+	return API.voteForPost(postId,option).then(postObj =>
+		dispatch(voteForPost(postObj))
+	)
+}
+
+export const fetchVoteComment = (commentId,option) => dispatch => {
+	return API.voteForComment(commentId,option).then(comment =>
+		dispatch(voteForComment(comment))
+	)
 }
