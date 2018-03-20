@@ -19,6 +19,9 @@ export const MODAL_CONTENT = 'MODAL_CONTENT';
 export const VOTE_POST = 'VOTE_POST';
 export const VOTE_COMMENT = 'VOTE_COMMENT';
 
+export const SORT_POST = 'SORT_POST';
+export const SORT_COMMENT = 'SORT_COMMENT';
+
 // 获取所有posts
 export const getPosts = postsArr => ({
 	type: GET_POSTS,
@@ -98,6 +101,19 @@ export const voteForPost = (postObj) =>({
 export const voteForComment = (comment) =>({
 	type: VOTE_COMMENT,
 	comment
+})
+
+// 排序
+export const sortOfPost = (by,order) => ({
+	type: SORT_POST,
+	by,
+	order
+})
+
+export const sortOfComment = (by,order) => ({
+	type: SORT_COMMENT,
+	by,
+	order
 })
 
 // ===== thunk =====

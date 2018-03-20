@@ -13,7 +13,9 @@ import {
 	MODAL_STATUS,
 	MODAL_CONTENT,
 	VOTE_POST,
-	VOTE_COMMENT
+	VOTE_COMMENT,
+	SORT_POST,
+	SORT_COMMENT
 } from '../actions';
 
 // 估计也要优化state的结构为{},方便state的变更 --  但是API请求回来的就是Array
@@ -141,10 +143,36 @@ function modal (state = {status:false,content:null}, action){
 	}
 }
 
+// 排序的依据-by,只支持voteScore和timestamp两种依据,默依据vote
+// 顺序order有asc升序和des降序两种,默认降序
+function postSort (state = {by:'voteScore',order:'des'}, action){
+	let {by,order} = action;
+	switch ( action.type ){
+		case SORT_POST :
+			return {by, order }
+		default :
+			return state
+	}
+}
+
+function postComment (state = {by:'voteScore',order:'des'}, action){
+	let {by,order} = action;
+	switch ( action.type ){
+		case SORT_COMMENT :
+			return {by, order }
+		default :
+			return state
+	}
+}
+
+
+
 export default combineReducers({
 	posts,
 	comments,
 	categories,
 	reqState,
-	modal
+	modal,
+	postSort,
+	postComment
 })

@@ -246,3 +246,36 @@ button.submit{
   box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
   min-width: 500px;
 }
+
+/* sorter */
+.sorter{
+	/*position: relative;
+    left: 50px;
+    top: 15px;*/
+    margin: 24px 0 -4px 50px;
+    user-select: none;
+}
+
+.sorter span{
+	margin-right: 20px;
+	color: #fff;
+}
+
+.sorter .note{
+	background: red;
+	font-size: 10px;
+	padding: 2px 4px;
+	border-radius: 4px;
+}
+
+.sorter .sortBy{
+	padding: 2px 6px;
+	border-radius: 8px;
+	background: gray;
+	text-align: center;
+	cursor: pointer;
+}
+
+.sorter .active{
+	background: #4f62ce;
+}
