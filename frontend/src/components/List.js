@@ -11,7 +11,7 @@ import { timestampToTime, getUuid } from '../utils/helper';
 
 class List extends Component {
 
-	sortProcess = sortBy =>{
+	theSortPostFn = sortBy =>{
 		const { postSort, sortPostFn } = this.props;
 		// 如果点击的是当前已选的排序依据,则逆转Order即可
 		if(sortBy === postSort.by){
@@ -40,13 +40,13 @@ class List extends Component {
 						<div className="sorter">
 							<span className="note">sort-by</span>
 							<span className={sortIndex==='voteScore'?'sortBy active':'sortBy'}
-								onClick={()=>this.sortProcess('voteScore')}
+								onClick={()=>this.theSortPostFn('voteScore')}
 							>
 								vote score
 								{sortIndex ==='voteScore' ? (order === '-' ? ' -' : ' +') : '' }
 							</span>
 							<span className={sortIndex==='voteScore'?'sortBy':'sortBy active'}
-								onClick={()=>this.sortProcess('timestamp')}
+								onClick={()=>this.theSortPostFn('timestamp')}
 							>
 								update time
 								{sortIndex ==='timestamp' ? (order === '-' ? ' -' : ' +') : '' }

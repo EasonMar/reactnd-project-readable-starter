@@ -155,7 +155,7 @@ function postSort (state = {by:'voteScore',order:'des'}, action){
 	}
 }
 
-function postComment (state = {by:'voteScore',order:'des'}, action){
+function commentSort (state = {by:'voteScore',order:'des'}, action){
 	let {by,order} = action;
 	switch ( action.type ){
 		case SORT_COMMENT :
@@ -174,5 +174,5 @@ export default combineReducers({
 	reqState,
 	modal,
 	postSort,
-	postComment
+	commentSort
 })

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchComments, fetchDelComment, modalStatus, modalContent, fetchVoteComment } from '../actions';
+import { fetchComments, fetchDelComment, modalStatus, modalContent, fetchVoteComment, sortOfComment } from '../actions';
 import UpdateComment from './UpdateComment'
 import Loading from 'react-loading';
 import { timestampToTime } from '../utils/helper';
+import sortBy from 'sort-by';
 
 class Comments extends Component {
 	componentWillMount(){
@@ -22,19 +23,49 @@ class Comments extends Component {
 		modalContent(realContent);
 	}
 
+	// 评论排序
+	theSortComment = sortBy =>{
+		const { commentSort, sortCommentFn } = this.props;
+		// 如果点击的是当前已选的排序依据,则逆转Order即可
+		if(sortBy === commentSort.by){
+			let order = commentSort.order === 'des' ? 'asc' : 'des';
+			sortCommentFn(sortBy, order);
+		}else{
+			// 否则,则逆转排序依据,然后order变为默认的des-降序
+			sortCommentFn(sortBy, 'des');
+		}
+	}
+
 	render() {
-		const { comments, parentId, delComment, voteComment } = this.props;
+		const { comments, parentId, delComment, voteComment, commentSort } = this.props;
 		const myComment = comments.find(com => com.parentId === parentId );
+		const sortIndex = commentSort.by;
+  		const order = commentSort.order === 'asc' ? '' : '-';
 		return (
 			myComment === undefined // 请求未完成
 			? <Loading delay={50} type='spokes' color='#222' className='loading' />
 			: <div className="commentArea">
 				<h4>Comment Area</h4>
+				<div className="sorter">
+					<span className="note">sort-by</span>
+					<span className={sortIndex==='voteScore'?'sortBy active':'sortBy'}
+						onClick={()=>this.theSortComment('voteScore')}
+					>
+						vote score
+						{sortIndex ==='voteScore' ? (order === '-' ? ' -' : ' +') : '' }
+					</span>
+					<span className={sortIndex==='voteScore'?'sortBy':'sortBy active'}
+						onClick={()=>this.theSortComment('timestamp')}
+					>
+						update time
+						{sortIndex ==='timestamp' ? (order === '-' ? ' -' : ' +') : '' }
+					</span>
+				</div>
 				<ul className="commentList">
 					{
 						myComment.comments.length === 0
 						? <li className="no_comment"><span>Come to make the first comment!</span></li>
-						: myComment.comments.map(com => (
+						: myComment.comments.sort(sortBy(order+sortIndex)).map(com => (
 							<li key={com.id}>
 								<div className="voter">
 									<div className="up" onClick={()=> voteComment(com.id, 'upVote')}></div>
@@ -63,20 +94,22 @@ class Comments extends Component {
 	}
 }
 
-function mapStateToProps ({ comments }) {
+function mapStateToProps ({ comments,commentSort }) {
 	return{
 		// comments: [...comments]
-		comments // 直接引用会有什么问题？
+		comments, // 直接引用会有什么问题？
+		commentSort
 	}
 }
 
 function mapDispatchToProps (dispatch) {
 	return {
-		fetchComments: postId =>dispatch(fetchComments(postId)),
+		fetchComments: postId => dispatch(fetchComments(postId)),
 		delComment: commentId => dispatch(fetchDelComment(commentId)),
 		voteComment: (commentId,option) => dispatch(fetchVoteComment(commentId,option)),
 		modalStatus: status => dispatch(modalStatus(status)),
 		modalContent: content => dispatch(modalContent(content)),
+		sortCommentFn: (by, order) => dispatch(sortOfComment(by, order))
 	}
 }
 
