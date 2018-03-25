@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchEditPost } from '../actions';
-
+import { Button } from 'antd';
 import Loading from 'react-loading';
 
 class Edit extends Component {
@@ -78,7 +78,7 @@ class Edit extends Component {
 					></textarea>
 				</label>
 				<br /><br />
-				<button className="submit" onClick={()=>this.submit()}>submit</button>
+				<Button type="primary" onClick={()=>this.submit()}>submit</Button>
 			</div>
 		)
 	}

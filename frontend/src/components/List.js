@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-
-import Loading from 'react-loading';
+import { List, Icon } from 'antd';
 import sortBy from 'sort-by';
 import Category from './Category.js';
 import { fetchVotePost , sortOfPost } from '../actions';
 import { timestampToTime, getUuid } from '../utils/helper';
 
+const IconText = ({ type, text }) => (
+	<span>
+	<Icon type={type} style={{ marginRight: 8 }} />
+		{text}
+	</span>
+);
 
-class List extends Component {
+class postList extends Component {
 
 	theSortPostFn = sortBy =>{
 		const { postSort, sortPostFn } = this.props;
@@ -33,8 +38,23 @@ class List extends Component {
 		return (
 			<div className="wrapper">
 				<Category cate={cat} />
+				<div className="sorter">
+					<span className="note">sort-by</span>
+					<span className={sortIndex==='voteScore'?'sortBy active':'sortBy'}
+						onClick={()=>this.theSortPostFn('voteScore')}
+					>
+						vote score
+						{sortIndex ==='voteScore' ? (order === '-' ? ' -' : ' +') : '' }
+					</span>
+					<span className={sortIndex==='voteScore'?'sortBy':'sortBy active'}
+						onClick={()=>this.theSortPostFn('timestamp')}
+					>
+						update time
+						{sortIndex ==='timestamp' ? (order === '-' ? ' -' : ' +') : '' }
+					</span>
+				</div>
 				{
-					reqState === 'begin' // 请求未完成
+					/*reqState === 'begin' // 请求未完成
 					? <Loading delay={50} type='spokes' color='#222' className='loading' />
 					: <div className="list_content">
 						<div className="sorter">
@@ -80,8 +100,34 @@ class List extends Component {
 							pathname: `/create/${getUuid()}`,
     						state: { category: cat }
 						}}>Add Post</Link>
-					</div>
+					</div>*/
 				}
+				<List
+					className="post-list"
+    				loading={reqState==='begin'}
+					itemLayout="vertical"
+					size="large"
+					dataSource={content.sort(sortBy(order+sortIndex))}
+					renderItem={item => (
+						<List.Item
+							key={item.id}
+								actions={[
+									<IconText type="like-o" text={item.voteScore} />,
+									<IconText type="message" text={item.commentCount} />]
+								}
+							>
+								<List.Item.Meta
+									title={<Link to={{pathname: `/detail/${item.id}`, state: { category: cat } }} >{item.title}</Link>}
+									description={`${item.author} update:${timestampToTime(item.timestamp)}`}
+								/>
+								{item.body}
+						</List.Item>
+					)}
+				/>
+				<Link className="add_post" to={{
+					pathname: `/create/${getUuid()}`,
+					state: { category: cat }
+				}}>Add Post</Link>
 			</div>
 		)
 	}
@@ -103,4 +149,4 @@ function mapDispatchToProps (dispatch) {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(postList))

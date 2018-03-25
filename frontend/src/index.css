@@ -32,15 +32,6 @@ button.edit{
 	margin-right: 14px;
 }
 
-button.submit{
-	border-color: green;
-	background: green;
-	padding: 8px 10px;
-	font-size: 20px;
-	font-weight: bold;
-	border-radius: 10px;
-}
-
 .voter{
 	position: absolute;
 	top: 0px;
@@ -86,7 +77,8 @@ button.submit{
 /* Category */
 .Category{
 	overflow: hidden;
-	margin: 20px 10px 0;
+	margin: 20px 0 0;
+	padding: 0;
 }
 
 .Category li{
@@ -140,7 +132,7 @@ button.submit{
 }
 
 .add_post{
-	margin-left: 50px;
+	margin-top: 30px;
 	text-decoration: none;
 	color: #fff;
 	font-weight: bold;
@@ -159,10 +151,6 @@ button.submit{
 	padding: 30px;
 }
 
-.post_detail span{
-	margin-right: 10px;
-	font-size: 10px;
-}
 .post_detail .vote{
 	font-size: 15px;
 	margin-right: 5px;
@@ -252,7 +240,7 @@ button.submit{
 	/*position: relative;
     left: 50px;
     top: 15px;*/
-    margin: 24px 0 -4px 50px;
+    margin: 18px 0 -4px;
     user-select: none;
 }
 
@@ -278,4 +266,22 @@ button.submit{
 
 .sorter .active{
 	background: #4f62ce;
+}
+
+/*========== antd =========*/
+.wrapper{
+	padding: 0 30px;
+}
+
+button{
+	margin-right: 15px;
+}
+
+.commentArea{
+	padding-top: 20px;
+	width: 50%;
+}
+
+.commentArea h3{
+	font-weight: bold;
 }

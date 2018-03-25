@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { fetchDelPost } from '../actions';
+import { Button } from 'antd';
 
 import Comments from './Comments.js';
 import Loading from 'react-loading';
@@ -42,12 +43,12 @@ class Detail extends Component {
 						<span className="time">{timestampToTime(post.timestamp)}</span>
 					</div>
 					<p className="content">{post.body}</p>
-					<button className="edit" onClick={()=>this.editFn(post.id)}>
+					<Button type="dashed" onClick={()=>this.editFn(post.id)}>
 						Edit The Post
-					</button>
-					<button className="delete" onClick={()=>this.deleteFn(post.id)}>
+					</Button>
+					<Button type="danger" onClick={()=>this.deleteFn(post.id)}>
 						Delete The Post
-					</button>
+					</Button>
 					<Comments parentId={post.id} />
 				</div>
 			</div>

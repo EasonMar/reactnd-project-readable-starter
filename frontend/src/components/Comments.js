@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchComments, fetchDelComment, modalStatus, modalContent, fetchVoteComment, sortOfComment } from '../actions';
 import UpdateComment from './UpdateComment'
-import Loading from 'react-loading';
 import { timestampToTime } from '../utils/helper';
+import { List,Button } from 'antd';
+import Loading from 'react-loading';
 import sortBy from 'sort-by';
 
 class Comments extends Component {
@@ -42,7 +43,7 @@ class Comments extends Component {
 		const sortIndex = commentSort.by;
   		const order = commentSort.order === 'asc' ? '' : '-';
 		return (
-			myComment === undefined // 请求未完成
+			/*myComment === undefined // 请求未完成
 			? <Loading delay={50} type='spokes' color='#222' className='loading' />
 			: <div className="commentArea">
 				<h4>Comment Area</h4>
@@ -88,6 +89,44 @@ class Comments extends Component {
 					onClick={()=> this.openModal()}
 				>Add comment</button>
 
+				<UpdateComment parentId={parentId} />
+			</div>*/
+			myComment === undefined // 请求未完成
+			? <Loading delay={50} type='spokes' color='#222' className='loading' />
+			: <div className="commentArea">
+				<h3>Comment Area</h3>
+				<div className="sorter">
+					<span className="note">sort-by</span>
+					<span className={sortIndex==='voteScore'?'sortBy active':'sortBy'}
+						onClick={()=>this.theSortComment('voteScore')}
+					>
+						vote score
+						{sortIndex ==='voteScore' ? (order === '-' ? ' -' : ' +') : '' }
+					</span>
+					<span className={sortIndex==='voteScore'?'sortBy':'sortBy active'}
+						onClick={()=>this.theSortComment('timestamp')}
+					>
+						update time
+						{sortIndex ==='timestamp' ? (order === '-' ? ' -' : ' +') : '' }
+					</span>
+				</div>
+				<List
+					loading={myComment===undefined}
+					itemLayout="horizontal"
+					dataSource={myComment.comments.sort(sortBy(order+sortIndex))}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta
+								title={item.body}
+								description={`vote:${item.voteScore}  by:${item.author}  update:${timestampToTime(item.timestamp)}`}
+							/>
+							<Button type="primary" onClick={()=> this.openModal(item)}>edit</Button>
+							<Button type="danger" onClick={()=> delComment(item.id)}>del</Button>
+						</List.Item>
+					)}
+				/>
+
+				<Button type="primary"onClick={()=> this.openModal()}>Add Comment</Button>
 				<UpdateComment parentId={parentId} />
 			</div>
 		)

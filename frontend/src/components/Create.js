@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchAddPost } from '../actions';
+import { Button } from 'antd';
 
 import Loading from 'react-loading';
 
@@ -78,7 +79,7 @@ class Create extends Component {
 					></textarea>
 				</label>
 				<br /><br />
-				<button className="submit" onClick={()=>this.submit()}>submit</button>
+				<Button type="primary" onClick={()=>this.submit()}>submit</Button>
 			</div>
 
 		)
