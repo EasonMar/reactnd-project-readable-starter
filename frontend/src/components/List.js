@@ -37,24 +37,26 @@ class List extends Component {
 					reqState === 'begin' // 请求未完成
 					? <Loading delay={50} type='spokes' color='#222' className='loading' />
 					: <div className="list_content">
-						<div className="sorter">
-							<span className="note">sort-by</span>
-							<span className={sortIndex==='voteScore'?'sortBy active':'sortBy'}
-								onClick={()=>this.theSortPostFn('voteScore')}
-							>
-								vote score
-								{sortIndex ==='voteScore' ? (order === '-' ? ' -' : ' +') : '' }
-							</span>
-							<span className={sortIndex==='voteScore'?'sortBy':'sortBy active'}
-								onClick={()=>this.theSortPostFn('timestamp')}
-							>
-								update time
-								{sortIndex ==='timestamp' ? (order === '-' ? ' -' : ' +') : '' }
-							</span>
-						</div>
+						{content.length < 2 ? ''
+							:<div className="sorter">
+								<span className="note">sort-by</span>
+								<span className={sortIndex==='voteScore'?'sortBy active':'sortBy'}
+									onClick={()=>this.theSortPostFn('voteScore')}
+								>
+									vote score
+									{sortIndex ==='voteScore' ? ` (${postSort.order})` : '' }
+								</span>
+								<span className={sortIndex==='voteScore'?'sortBy':'sortBy active'}
+									onClick={()=>this.theSortPostFn('timestamp')}
+								>
+									update time
+									{sortIndex ==='timestamp' ? ` (${postSort.order})` : '' }
+								</span>
+							</div>
+						}
 						<ul className="post_list">
 							{content.length === 0
-								? <li className="no_post">Don't have post yet</li>
+								? <li className="no_post">There are no posts yet.</li>
 								: content.sort(sortBy(order+sortIndex)).map(post=>(
 									<li key={post.id}>
 										<div className="voter">

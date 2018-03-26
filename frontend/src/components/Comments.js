@@ -46,21 +46,23 @@ class Comments extends Component {
 			? <Loading delay={50} type='spokes' color='#222' className='loading' />
 			: <div className="commentArea">
 				<h4>Comment Area</h4>
-				<div className="sorter">
+				{myComment.comments.length < 2 ? ''
+				: <div className="sorter">
 					<span className="note">sort-by</span>
 					<span className={sortIndex==='voteScore'?'sortBy active':'sortBy'}
 						onClick={()=>this.theSortComment('voteScore')}
 					>
 						vote score
-						{sortIndex ==='voteScore' ? (order === '-' ? ' -' : ' +') : '' }
+						{sortIndex ==='voteScore' ? ` (${commentSort.order})` : '' }
 					</span>
 					<span className={sortIndex==='voteScore'?'sortBy':'sortBy active'}
 						onClick={()=>this.theSortComment('timestamp')}
 					>
 						update time
-						{sortIndex ==='timestamp' ? (order === '-' ? ' -' : ' +') : '' }
+							{sortIndex ==='timestamp' ? ` (${commentSort.order})` : '' }
 					</span>
-				</div>
+				  </div>
+				}
 				<ul className="commentList">
 					{
 						myComment.comments.length === 0
@@ -71,7 +73,9 @@ class Comments extends Component {
 									<div className="up" onClick={()=> voteComment(com.id, 'upVote')}></div>
 									<div className="down" onClick={()=> voteComment(com.id, 'downVote')}></div>
 								</div>
-								<span className="score">{com.voteScore}</span>
+								<span className={com.voteScore > 0 ? "score" : "score nega"}>
+									{ com.voteScore > 0 ? `+${com.voteScore}` : com.voteScore }
+								</span>
 								<span>{com.body}</span>
 								<span className="author">{com.author}</span>
 								<span className="time">{timestampToTime(com.timestamp)}</span>

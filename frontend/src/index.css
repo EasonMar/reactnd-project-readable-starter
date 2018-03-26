@@ -159,6 +159,21 @@ button.submit{
 	padding: 30px;
 }
 
+.post_detail>div.content{
+	position: relative;
+}
+
+.post_detail>div.content .voter{
+	top: 2px;
+    left: -20px;
+}
+
+.post_detail p.content{
+	padding: 20px;
+	background: #dcdcfd;
+	border-radius: 10px;
+}
+
 .post_detail span{
 	margin-right: 10px;
 	font-size: 10px;
@@ -167,13 +182,10 @@ button.submit{
 	font-size: 15px;
 	margin-right: 5px;
 	border: 2px solid black;
-	border-radius: 50%;
+	border-radius: 10px;
 	display: inline-block;
     padding: 5px;
 	text-align: center;
-}
-
-.post_detail .vote.posi{
 	color: red;
 	border-color: red;
 }
@@ -205,18 +217,33 @@ button.submit{
 }
 
 /* Comment */
+.commentArea{
+    background: #eee;
+    margin-top: 18px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.commentArea h4{
+	margin-top: 0;
+}
+
 .commentList li{
 	margin-bottom: 30px;
 }
 
 .commentList .score{
-	border-radius: 50%;
+	border-radius: 10px;
 	display: inline-block;
     padding: 5px;
 	text-align: center;
 	color: #fff;
 	font-weight: bold;
 	background: red;
+}
+
+.commentList .score.nega{
+	background: green;
 }
 
 

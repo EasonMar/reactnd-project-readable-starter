@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { fetchDelPost } from '../actions';
+import { fetchVotePost, fetchDelPost } from '../actions';
 
 import Comments from './Comments.js';
 import Loading from 'react-loading';
@@ -23,18 +23,21 @@ class Detail extends Component {
 	}
 
 	render() {
-		const { posts, match } = this.props;
+		const { posts, match, votePostFn } = this.props;
 		const post = posts.find(post => post.id === match.params.pid);
 		return (
 			post === undefined // 请求未完成
 			? <Loading delay={50} type='spokes' color='#222' className='loading' />
 			: <div className="post_detail">
 				<div className="content">
+					<div className="voter">
+						<div className="up" onClick={()=>votePostFn(post.id, "upVote")}></div>
+						<div className="down" onClick={()=>votePostFn(post.id,"downVote")}></div>
+					</div>
 					<h3>
-						{post.voteScore > 0
-							? <span className="vote posi">{`+${post.voteScore}`}</span>
-							: <span className="vote nega">{post.voteScore}</span>
-						}
+						<span className={post.voteScore > 0? 'vote' : "vote nega"}>
+							{ post.voteScore > 0 ? `+${post.voteScore}` : post.voteScore }
+						</span>
 						<span className="title">{post.title}</span>
 					</h3>
 					<div className="post_info">
@@ -63,6 +66,7 @@ function mapStateToProps ({ posts }) {
 
 function mapDispatchToProps (dispatch) {
 	return {
+		votePostFn: (postId, option) => dispatch(fetchVotePost(postId, option)),
 	    del: postId => dispatch(fetchDelPost(postId))
 	}
 }
