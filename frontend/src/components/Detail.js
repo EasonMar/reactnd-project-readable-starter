@@ -13,13 +13,13 @@ class Detail extends Component {
 		del(postId).then(()=>{
 			const category = location.state.category;
 			const url = category === 'Home' ? '/' : `/list/${category}`;
-			history.replace(url); // 如何回退到具体的列表页？根据location.state.category(即使重新刷新页面,也能记录正确的category!)
+			history.replace(url); // 如何回退到具体的列表页？根据location.state.category --> 即使刷新页面,此状态也能记录正确的category!
 		});
 	}
 
 	editFn(postId){
 		const { history } = this.props;
-		history.push({pathname:`/edit/${postId}`});    // 怎么跳转？history.pushState
+		history.push({pathname:`/edit/${postId}`});    // 怎么跳转  --> history.pushState
 	}
 
 	render() {

@@ -19,7 +19,7 @@ class Edit extends Component {
 		// 编辑帖子 --- 异步跳至回detail --- 直接用go(-1)跳回到detail页.再次goback则回到进入编辑之前的category,合情合理
 		editPost(postId, postData)
 		.then(() => history.go(-1))
-		.catch(error => alert(error)); // 这样可以有错误处理了！
+		.catch(error => alert(error)); // 可以这样处理错误了！
 	}
 
 	render() {

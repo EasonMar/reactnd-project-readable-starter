@@ -101,7 +101,7 @@ class Comments extends Component {
 function mapStateToProps ({ comments,commentSort }) {
 	return{
 		// comments: [...comments]
-		comments, // 直接引用会有什么问题？
+		comments, // 直接引用state会有什么问题？
 		commentSort
 	}
 }
