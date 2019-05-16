@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Loading from 'react-loading';
 import sortBy from 'sort-by';
 import Category from './Category.js';
-import { fetchVotePost , sortOfPost } from '../actions';
+import { fetchVotePost , sortOfPost } from '../actions/post';
 import { timestampToTime, getUuid } from '../utils/helper';
 
 

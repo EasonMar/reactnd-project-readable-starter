@@ -5,7 +5,8 @@ import List from './List.js';
 import Detail from './Detail.js';
 import Create from './Create.js';
 import Edit from './Edit.js';
-import { fetchPosts,fetchCategories } from '../actions';
+import { fetchPosts } from '../actions/post';
+import { fetchCategories } from '../actions/other';
 
 class App extends Component {
 	componentWillMount(){

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { fetchVotePost, fetchDelPost } from '../actions';
+import { fetchVotePost, fetchDelPost } from '../actions/post';
 
 import Comments from './Comments.js';
 import Loading from 'react-loading';

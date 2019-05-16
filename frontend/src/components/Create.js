@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchAddPost } from '../actions';
+import { fetchAddPost } from '../actions/post';
 
 import Loading from 'react-loading';
 

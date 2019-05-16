@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchComments, fetchDelComment, modalStatus, modalContent, fetchVoteComment, sortOfComment } from '../actions';
+import { fetchComments, fetchDelComment, fetchVoteComment, sortOfComment } from '../actions/comment';
+import {modalStatus, modalContent } from '../actions/other';
 import UpdateComment from './UpdateComment'
 import Loading from 'react-loading';
 import { timestampToTime } from '../utils/helper';

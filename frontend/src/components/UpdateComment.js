@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
-import { modalStatus, modalContent, fetchAddComment, fetchEditComment } from '../actions';
+import { fetchAddComment, fetchEditComment } from '../actions/comment';
+import { modalStatus, modalContent } from '../actions/other';
 import { getUuid } from '../utils/helper';
 
 class UpdateComment extends Component {
