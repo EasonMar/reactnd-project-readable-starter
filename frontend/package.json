@@ -12,7 +12,9 @@
     "react-scripts": "1.1.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "material-ui": "^0.19.4",
+    "webpack-bundle-analyzer": "^3.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

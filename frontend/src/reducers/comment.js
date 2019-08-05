@@ -1,44 +1,51 @@
 // 评论不应该跟帖子分开吧？
 // 不过有时候评论是在进入到某个具体到帖子内部时才会向后端请求！
 
-// 能否用其父id作为他们的key，范式化它们
+// 能否用其父id作为他们的key，范式化它们?
 
-import { COMMENT_GET_ALL, COMMENT_ADD, COMMENT_DELETE, COMMENT_EDIT, VOTE_COMMENT, SORT_COMMENT } from '../actions/comment';
+import { 
+	COMMENT_GET_ALL, 
+	COMMENT_ADD, 
+	COMMENT_DELETE, 
+	COMMENT_EDIT, 
+	VOTE_COMMENT, 
+	SORT_COMMENT 
+} from '../actions/comment';
 
-// 好恶心！stateOfComments 结构需要优化 --- 用{}来组织或许会更方便编辑！
-export function comments (stateOfComments = [], action){
+// 好恶心！Comments 结构需要优化 --- 用{}来组织或许会更方便编辑！
+export function comments (Comments = [], action){
 	switch (action.type){
 		case COMMENT_GET_ALL :
 			return [
-				...stateOfComments,
+				...Comments,
 				action.data
 			]
 		case COMMENT_ADD :
 			return [
-				...stateOfComments.filter(commentSet => commentSet.parentId !== action.comment.parentId), // 筛出其他comment集
-				newComments(stateOfComments,action)
+				...Comments.filter(commentSet => commentSet.parentId !== action.comment.parentId), // 筛出其他comment集
+				newComments(Comments,action)
 			]
 		case COMMENT_EDIT :
 			return [
-				...stateOfComments.filter(commentSet => commentSet.parentId !== action.comment.parentId),
-				newComments(stateOfComments,action)
+				...Comments.filter(commentSet => commentSet.parentId !== action.comment.parentId),
+				newComments(Comments,action)
 			]
 		case COMMENT_DELETE :
-			let involveComSet = stateOfComments.find(commentSet => commentSet.parentId === action.parentId);
+			let involveComSet = Comments.find(commentSet => commentSet.parentId === action.parentId);
 			involveComSet.comments = [
 				...involveComSet.comments.filter(comment => comment.id !== action.commentId)
 			]
 			return [
-				...stateOfComments.filter(comment => comment.parentId !== action.parentId),
+				...Comments.filter(comment => comment.parentId !== action.parentId),
 				involveComSet
 			]
 		case VOTE_COMMENT:
 			return [
-				...stateOfComments.filter(commentSet=> commentSet.parentId !== action.comment.parentId),
-				newComments(stateOfComments,action)
+				...Comments.filter(commentSet=> commentSet.parentId !== action.comment.parentId),
+				newComments(Comments,action)
 			]
 		default :
-			return stateOfComments;
+			return Comments;
 	}
 
 	// comment数据处理函数...

@@ -17,3 +17,14 @@ export default combineReducers({
 })
 
 // 等价于：
+export function Index({state = {}, action}){
+	return {
+		posts: posts(state.posts, action),
+		comments: comments(state.comments, action),
+		categories: categories(state.categories, action),
+		reqState: reqState(state.reqState, action),
+		modal: modal(state.modal, action),
+		postSort: postSort(state.postSort, action),
+		commentSort: commentSort(state.commentSort, action)
+	}
+}

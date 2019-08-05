@@ -1,6 +1,17 @@
 // 引入 Action type
-import { POST_GET_ALL, POST_ADD, POST_DELETE, POST_EDIT, VOTE_POST, SORT_POST } from '../actions/post';
-import { COMMENT_ADD, COMMENT_DELETE } from '../actions/comment';
+import { 
+	POST_GET_ALL, 
+	POST_ADD, 
+	POST_DELETE, 
+	POST_EDIT, 
+	VOTE_POST, 
+	SORT_POST 
+} from '../actions/post';
+
+import { 
+	COMMENT_ADD, 
+	COMMENT_DELETE 
+} from '../actions/comment';
 
 // 估计也要优化 stateOfPosts 的结构为{},方便 stateOfPosts 的变更 --  但是API请求回来的就是Array
 export function posts (stateOfPosts = [], action){
@@ -26,6 +37,7 @@ export function posts (stateOfPosts = [], action){
 				if(post.id === newPost.id) return newPost;
 				return post;
 			})
+		// 为什么post里面又有comment的东西？而且操作还那么粗暴不规范！？
 		case COMMENT_ADD :
 			let addCommentPost = stateOfPosts.find(post => post.id === action.comment.parentId);
 			addCommentPost.commentCount++; // 实验证明,这样做直接修改了stateOfPosts？！

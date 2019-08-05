@@ -56,7 +56,7 @@ export const sortOfPost = (by,order) => ({
 export const fetchPosts = () => dispatch => {
 	dispatch(reqState('begin'));
 	API.getPosts().then(postsArr => {
-		dispatch(reqState('done'))
+		dispatch(reqState('end'))
 		dispatch(getPosts(postsArr))
 	})
 }
